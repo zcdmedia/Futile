@@ -1,0 +1,42 @@
+	Futile release 0.x
+
+These are the release notes for futile version 0.0.  This file's name suggests
+you do one thing with this file, and one thing only, so do it.
+
+ABOUT
+
+	Futile is a cross-platform tile game engine distributed under the GNU
+	General Public License.
+
+	Futile uses OpenGL for all graphics rendering.
+
+PLATFORMS
+
+	Futile currently only works on Linux but eventually aims to support
+	a variety of platforms including, but not limited to:
+		- Android
+		- iOS
+		- Linux
+		- MAC OS X
+		- Windows
+
+COMPILING
+
+	Futile is built using CMake.  CMake will alert you if any additional
+	dependencies are required.
+
+	1 :: open a terminal and cd into the Futile root directory
+
+		$ cd /path/to/futile/root/
+
+	2 :: cd into the build directory
+
+		$ cd build
+
+	3 :: generate the Makefile with CMake
+
+		$ cmake ..
+
+	4 :: now run the make utility to build the project
+
+		$ make
