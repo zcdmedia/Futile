@@ -8,7 +8,7 @@
 
 #include <X11/Xlib.h>			/* default X11 header */
 #include <X11/Xatom.h>			/* protocol message creation */
-#include <X11/extensions/xf86vmode.h>
+#include <X11/extensions/xf86vmode.h>	/* fullscreen support */
 
 #include <cassert>
 
@@ -24,14 +24,12 @@ public:
 	XWindow();
 	explicit XWindow(const Dimension2D & dim);
 	XWindow(const Dimension2D & dim, bool fullscreen);
-	XWindow(const XWindow & xwin);
-	XWindow & operator=(const XWindow & xwin);
 	~XWindow();
 
 	virtual void init();
 	virtual void destroy();
 	virtual void resize(const Dimension2D & dim);
-	virtual void refresh();
+	virtual void refresh() const;
 
 private:
 	Display * display;
@@ -40,13 +38,12 @@ private:
 	XF86VidModeModeInfo mode;
 	GLXContext context;
 
-	bool fullscreen;
 	bool double_buffered;
 
 	int screen;
-	int x;
-	int y;
-	int depth;
+
+	XWindow(const XWindow & xwin);
+	XWindow & operator=(const XWindow & xwin);
 };
 
 }

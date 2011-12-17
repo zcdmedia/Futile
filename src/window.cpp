@@ -4,11 +4,25 @@ namespace futile {
 
 Window::~Window() { }
 
-Window::Window() { }
-
-Window::Window(const Dimension2D & dim)
+Window::Window() : dim(Window::DEFAULT_DIM)
 {
-	this->dim = dim;
+	this->fullscreen = false;
+}
+
+Window::Window(const Dimension2D & dim) : dim(dim)
+{
+	this->fullscreen = false;
+}
+
+Window::Window(const Dimension2D & dim, bool fullscreen) : dim(dim)
+{
+	this->fullscreen = fullscreen;
+}
+
+/* accessors */
+bool Window::is_fullscreen() const
+{
+	return this->fullscreen;
 }
 
 }

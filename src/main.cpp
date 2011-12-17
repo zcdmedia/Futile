@@ -1,11 +1,12 @@
 #include "xwindow.h"
+#include "config.h"
 
 /* internal prototypes */
 static inline void render(futile::Window *, GLfloat);
 
 int main()
 {
-	futile::Window * window = new futile::XWindow(futile::Dimension2D(256, 256));
+	futile::Window * window = new futile::XWindow(futile::Dimension2D(256, 256), true);
 	window->init();
 
 	GLfloat rotation_quad = 0.0f;

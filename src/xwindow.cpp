@@ -45,23 +45,12 @@ static inline void opengl_resize(const futile::Dimension2D &);
 
 namespace futile {
 
-XWindow::XWindow() : futile::Window()
-{
-	this->fullscreen = false;
-}
+XWindow::XWindow() : futile::Window() { }
 
-XWindow::XWindow(const Dimension2D & dim) : futile::Window(dim)
-{
-	this->fullscreen = false;
-}
+XWindow::XWindow(const Dimension2D & dim) : futile::Window(dim, false) { }
 
 XWindow::XWindow(const Dimension2D & dim, bool fullscreen)
-{
-	this->fullscreen = fullscreen;
-}
-
-XWindow::XWindow(const XWindow & xwin) { }
-XWindow & XWindow::operator=(const XWindow & xwin) { }
+	: futile::Window(dim, fullscreen) { }
 
 XWindow::~XWindow()
 {
@@ -126,7 +115,7 @@ void XWindow::resize(const Dimension2D & dim)
 	opengl_resize(this->dim); 
 }
 
-void XWindow::refresh()
+void XWindow::refresh() const
 {
 	if(this->double_buffered) {
 		glXSwapBuffers(this->display, this->window);
@@ -146,7 +135,7 @@ static inline XF86VidModeModeInfo get_mode(const futile::Dimension2D & dim,
 	const int width = dim.get_width();
 	const int height = dim.get_height();
 
-	XF86VidModeModeInfo optimal;
+	XF86VidModeModeInfo optimal = get_default_mode(display, screen);
 	for(int i = 0; i < num_modes; i++) {
 		XF86VidModeModeInfo * mode = modes[i];
 		if(mode->hdisplay == width && mode->vdisplay == height) {
