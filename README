@@ -20,7 +20,7 @@ PLATFORMS
 		- MAC OS X
 		- Windows
 
-COMPILING
+COMPILE
 
 	Futile is built using CMake.  CMake will alert you if any additional
 	dependencies are required.
@@ -40,3 +40,13 @@ COMPILING
 	4 :: now run the make utility to build the project
 
 		$ make
+
+INSTALL
+
+	Before installing Futile, you must generate the project Makefiles
+	with CMake; to do so, follow the instructions under the "COMPILE"
+	section of this file.
+
+	Once generated, simply execute:
+
+		$ make install
