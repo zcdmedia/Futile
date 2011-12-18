@@ -1,12 +1,5 @@
 #include "xwindow.h"
 
-/* constants */
-static const unsigned long int EVENT_MASK = ExposureMask | KeyPressMask
-                                            | ButtonPressMask
-                                            | StructureNotifyMask;
-static const unsigned long int VALUE_MASK = CWBorderPixel | CWColormap
-                                            | CWEventMask | CWOverrideRedirect;
-
 /* static */
 static int sgl_buf_attr[] = {
 	GLX_RGBA,
@@ -30,27 +23,27 @@ static int dbl_buf_attr[] = {
 static inline XF86VidModeModeInfo get_mode(const futile::Dimension2D &,
                                            Display *, int);
 static inline XF86VidModeModeInfo get_default_mode(Display *, int);
+
 static inline XVisualInfo * get_visual_info(Display *, int, bool *);
-static inline void set_fullscreen(Display *, int, XF86VidModeModeInfo *);
-static inline ::Window create_fullscreen_window(Display *, ::Window,
-                                                const XF86VidModeModeInfo *,
-                                                XVisualInfo *,
-                                                XSetWindowAttributes *);
-static inline ::Window create_windowed_window(Display *, ::Window parent,
-                                              const futile::Dimension2D &,
-                                              XVisualInfo *,
-                                              XSetWindowAttributes *);
+
 static inline void opengl_init(const futile::Dimension2D &);
 static inline void opengl_resize(const futile::Dimension2D &);
 
 namespace futile {
 
-XWindow::XWindow() : futile::Window() { }
+XWindow::XWindow()
+{
+	this->dim = Dimension2D(1);
+	this->display = NULL;
+	this->vi = NULL;
+}
 
-XWindow::XWindow(const Dimension2D & dim) : futile::Window(dim, false) { }
-
-XWindow::XWindow(const Dimension2D & dim, bool fullscreen)
-	: futile::Window(dim, fullscreen) { }
+XWindow::XWindow(const Dimension2D & dim)
+{
+	this->dim = dim;
+	this->display = NULL;
+	this->vi = NULL;
+}
 
 XWindow::~XWindow()
 {
@@ -62,51 +55,49 @@ void XWindow::init()
 	this->display = XOpenDisplay(0);
 	this->screen = DefaultScreen(this->display);
 	this->mode = get_mode(this->dim, this->display, this->screen);
+	this->vi = get_visual_info(this->display, this->screen,
+                                   &this->double_buffered);
+	assert(this->vi);
 
-	XVisualInfo * vi = get_visual_info(this->display, this->screen,
-					   &this->double_buffered);
-	assert(vi);
+	this->context = glXCreateContext(this->display, this->vi, NULL,
+                                         GL_TRUE);
 
-	this->context = glXCreateContext(this->display, vi, NULL, GL_TRUE);
-
-	::Window root = RootWindow(this->display, vi->screen);
-	Colormap cmap = XCreateColormap(this->display, root, vi->visual,
+	::Window root = RootWindow(this->display, this->vi->screen);
+	Colormap cmap = XCreateColormap(this->display, root, this->vi->visual,
 					AllocNone);
 	this->attr.colormap = cmap;
 	this->attr.border_pixel = 0;
 	this->attr.event_mask = EVENT_MASK;
+	this->window = this->create_window();
 
-	if(this->fullscreen) {
-		set_fullscreen(this->display, this->screen, &this->mode);
-		this->attr.override_redirect = True;
-		this->window = create_fullscreen_window(this->display, root,
-                                                        &this->mode, vi,
-                                                        &this->attr);
-	} else {
-		this->window = create_windowed_window(this->display, root,
-                                                      this->dim, vi,
-                                                      &this->attr);
-	}
-
-	glXMakeCurrent(this->display, this->window, this->context);
+	bool context_is_set = glXMakeCurrent(this->display, this->window,
+                                             this->context);
+	assert(context_is_set);
 	opengl_init(this->dim);
 }
 
 void XWindow::destroy()
 {
+	if(!(this->display)) return;
+
 	if(this->context) {
 		glXDestroyContext(this->display, this->context);
 		this->context = NULL;
 	}
 
-	if(this->fullscreen) {
-		XF86VidModeModeInfo mode = get_default_mode(this->display,
-                                                            this->screen);
-		XF86VidModeSwitchToMode(this->display, this->screen, &mode);
-		XF86VidModeSetViewPort(this->display, this->screen, 0, 0);
+	if(this->vi) {
+		XFree(this->vi);
+		this->vi = NULL;
 	}
 
+	/* revert back to original settings */
+	XF86VidModeModeInfo mode = get_default_mode(this->display,
+						    this->screen);
+	XF86VidModeSwitchToMode(this->display, this->screen, &mode);
+	XF86VidModeSetViewPort(this->display, this->screen, 0, 0);
+
 	XCloseDisplay(this->display);
+	this->display = NULL;
 }
 
 void XWindow::resize(const Dimension2D & dim)
@@ -118,8 +109,30 @@ void XWindow::resize(const Dimension2D & dim)
 void XWindow::refresh() const
 {
 	if(this->double_buffered) {
+		assert(this->display && this->window);
 		glXSwapBuffers(this->display, this->window);
 	}
+}
+
+::Window XWindow::create_window()
+{
+	assert(this->display);
+	const int width = dim.get_width();
+	const int height = dim.get_height();
+	::Window parent = RootWindow(this->display, this->vi->screen);
+	::Window window = XCreateWindow(this->display, parent, 0, 0, width,
+                                        height, 0, this->vi->depth,
+                                        InputOutput, this->vi->visual,
+                                        XWindow::VALUE_MASK, &this->attr);
+	Atom wm_delete = XInternAtom(this->display, "WM_DELETE_WINDOW", True);
+
+	const int num_protocols = 1;
+	XSetWMProtocols(this->display, window, &wm_delete, num_protocols);
+	XSetStandardProperties(this->display, window, "Futile", "Futile", None,
+                               NULL, 0, NULL);
+	XMapRaised(display, window);
+
+	return window;
 }
 
 }
@@ -174,57 +187,6 @@ static inline XVisualInfo * get_visual_info(Display * display, int screen,
 	}
 
 	return vi;
-}
-
-static inline void set_fullscreen(Display * display, int screen,
-                                  XF86VidModeModeInfo * mode)
-{
-	XF86VidModeSwitchToMode(display, screen, mode);
-	XF86VidModeSetViewPort(display, screen, 0, 0);
-}
-
-static inline ::Window create_fullscreen_window(Display * display,
-                                                ::Window parent,
-                                                const XF86VidModeModeInfo *
-                                                mode,
-                                                XVisualInfo * vi,
-                                                XSetWindowAttributes * attr)
-{
-	assert(mode);
-	const int width = mode->hdisplay;
-	const int height = mode->vdisplay;
-	::Window window = XCreateWindow(display, parent, 0, 0, width, height, 0,
-                                        vi->depth, InputOutput, vi->visual,
-                                        VALUE_MASK, attr);
-	XWarpPointer(display, None, window, 0, 0, 0, 0, 0, 0);
-	XMapRaised(display, window);
-	XGrabKeyboard(display, window, True, GrabModeAsync, GrabModeAsync,
-                      CurrentTime);
-	XGrabPointer(display, window, True, ButtonPressMask, GrabModeAsync,
-                     GrabModeAsync, window, None, CurrentTime);
-
-	return window;
-}
-
-static inline ::Window create_windowed_window(Display * display,
-                                              ::Window parent,
-                                              const futile::Dimension2D & dim,
-                                              XVisualInfo * vi,
-                                              XSetWindowAttributes * attr)
-{
-	const int width = dim.get_width();
-	const int height = dim.get_height();
-	::Window window = XCreateWindow(display, parent, 0, 0, width, height, 0,
-                                        vi->depth, InputOutput, vi->visual,
-                                        VALUE_MASK, attr);
-	Atom wm_delete = XInternAtom(display, "WM_DELETE_WINDOW", True);
-	const int num_protocols = 1;
-	XSetWMProtocols(display, window, &wm_delete, num_protocols);
-	XSetStandardProperties(display, window, "Futile", "Futile", None, NULL,
-                               0, NULL);
-	XMapRaised(display, window);
-
-	return window;
 }
 
 static inline void opengl_init(const futile::Dimension2D & dim)

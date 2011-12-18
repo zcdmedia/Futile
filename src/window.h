@@ -3,8 +3,8 @@
 	@author		Matthew Hinkle
  */
 
-#ifndef __FUTILE_WINDOW_H__
-#define __FUTILE_WINDOW_H__
+#ifndef FUTILE_WINDOW_H_
+#define FUTILE_WINDOW_H_
 
 #include "dimension2d.h"
 #include "graphics.h"
@@ -12,14 +12,11 @@
 namespace futile {
 
 /**
-	platform independent window abstract class
+	platform independent window interface
  */
 class Window {
 public:
-	~Window();
-
-	/* accessors */
-	virtual bool is_fullscreen() const;
+	virtual ~Window() { }
 
 	/* methods */
 	virtual void init() = 0;
@@ -30,13 +27,7 @@ public:
 	static const int DEFAULT_DIM = 1;
 
 protected:
-	Window();
-	explicit Window(const Dimension2D & dim);
-	Window(const Dimension2D & dim, bool fullscreen);
-
-	Dimension2D dim;
-
-	bool fullscreen;
+	Window() { }
 
 private:
 	Window(const Window &);

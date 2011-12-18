@@ -18,7 +18,7 @@ public:
 	Dimension2D(int width, int height);
 	Dimension2D(const Dimension2D & dim);
 	Dimension2D & operator=(const Dimension2D & dim);
-	~Dimension2D();
+	virtual ~Dimension2D();
 
 	/* accessors */
 	int get_width() const;

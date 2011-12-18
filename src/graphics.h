@@ -4,8 +4,8 @@
 	@brief		platform independent include for the graphics library
  */
 
-#ifndef __GRAPHICS_H__
-#define __GRAPHICS_H__
+#ifndef FUTILE_GRAPHICS_H_
+#define FUTILE_GRAPHICS_H_
 
 /* include opengl header files */
 #include <GL/gl.h>	/* opengl */

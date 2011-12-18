@@ -3,12 +3,12 @@
 	@author		Matthew Hinkle
  */
 
-#ifndef __FUTILE_XWINDOW_H__
-#define __FUTILE_XWINDOW_H__
+#ifndef FUTILE_XWINDOW_H_
+#define FUTILE_XWINDOW_H_
 
 #include <X11/Xlib.h>			/* default X11 header */
 #include <X11/Xatom.h>			/* protocol message creation */
-#include <X11/extensions/xf86vmode.h>	/* fullscreen support */
+#include <X11/extensions/xf86vmode.h>	/* XF86 video operations */
 
 #include <cassert>
 
@@ -23,24 +23,40 @@ class XWindow : public futile::Window {
 public:
 	XWindow();
 	explicit XWindow(const Dimension2D & dim);
-	XWindow(const Dimension2D & dim, bool fullscreen);
-	~XWindow();
+	virtual ~XWindow();
 
+	/* accessors */
+	inline const Dimension2D & get_dimension() const { return this->dim; }
+
+	/* methods */
 	virtual void init();
 	virtual void destroy();
 	virtual void resize(const Dimension2D & dim);
 	virtual void refresh() const;
 
-private:
+	static const unsigned long int EVENT_MASK = ExposureMask | KeyPressMask
+                                                    | ButtonPressMask
+                                                    | StructureNotifyMask;
+	static const unsigned long int VALUE_MASK = CWBorderPixel | CWColormap
+                                                    | CWEventMask
+                                                    | CWOverrideRedirect;
+
+protected:
+	virtual ::Window create_window();
+
 	Display * display;
+	XVisualInfo * vi;
 	::Window window;
 	XSetWindowAttributes attr;
 	XF86VidModeModeInfo mode;
+
+	int screen;
+
+	Dimension2D dim;
+private:
 	GLXContext context;
 
 	bool double_buffered;
-
-	int screen;
 
 	XWindow(const XWindow & xwin);
 	XWindow & operator=(const XWindow & xwin);

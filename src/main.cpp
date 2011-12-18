@@ -1,4 +1,4 @@
-#include "xwindow.h"
+#include "xfullscreenwindow.h"
 #include "config.h"
 
 /* internal prototypes */
@@ -6,11 +6,11 @@ static inline void render(futile::Window *, GLfloat);
 
 int main()
 {
-	futile::Window * window = new futile::XWindow(futile::Dimension2D(256, 256), true);
+	futile::Window * window = new futile::XFullScreenWindow();
 	window->init();
 
 	GLfloat rotation_quad = 0.0f;
-	for(;;) {
+	while(rotation_quad < 100.0f) {
 		render(window, rotation_quad);
 		rotation_quad += 0.8f;
 	}

@@ -1,5 +1,8 @@
+# compiler flags
+set (CMAKE_CXX_FLAGS "-g")
+
 # source files list
-set (SRC main.cpp dimension2d.cpp window.cpp xwindow.cpp)
+set (SRC main.cpp dimension2d.cpp xwindow.cpp xfullscreenwindow.cpp)
 
 # locate common libraries
 find_package (OpenGL)
