@@ -29,8 +29,9 @@ COMPILE
 
 		$ cd /path/to/futile/root/
 
-	2 :: cd into the build directory
+	2 :: create a build directory and cd into it
 
+		$ mkdir build
 		$ cd build
 
 	3 :: generate the Makefile with CMake

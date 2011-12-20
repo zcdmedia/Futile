@@ -20,12 +20,13 @@ static int dbl_buf_attr[] = {
 };
 
 /* internal prototypes */
-static inline XF86VidModeModeInfo get_mode(const futile::Dimension2D &,
-                                           Display *, int);
-static inline XF86VidModeModeInfo get_default_mode(Display *, int);
+static XF86VidModeModeInfo get_mode(const futile::Dimension2D &, Display *,
+                                    int);
+static XF86VidModeModeInfo get_default_mode(Display *, int);
 
-static inline XVisualInfo * get_visual_info(Display *, int, bool *);
+static XVisualInfo * get_visual_info(Display *, int, bool *);
 
+static inline void revert_mode(Display *, int);
 static inline void opengl_init(const futile::Dimension2D &);
 static inline void opengl_resize(const futile::Dimension2D &);
 
@@ -33,6 +34,7 @@ namespace futile {
 
 XWindow::XWindow()
 {
+	this->double_buffered = false;
 	this->dim = Dimension2D(1);
 	this->display = NULL;
 	this->vi = NULL;
@@ -40,6 +42,7 @@ XWindow::XWindow()
 
 XWindow::XWindow(const Dimension2D & dim)
 {
+	this->double_buffered = false;
 	this->dim = dim;
 	this->display = NULL;
 	this->vi = NULL;
@@ -90,11 +93,7 @@ void XWindow::destroy()
 		this->vi = NULL;
 	}
 
-	/* revert back to original settings */
-	XF86VidModeModeInfo mode = get_default_mode(this->display,
-						    this->screen);
-	XF86VidModeSwitchToMode(this->display, this->screen, &mode);
-	XF86VidModeSetViewPort(this->display, this->screen, 0, 0);
+	revert_mode(this->display, this->screen);
 
 	XCloseDisplay(this->display);
 	this->display = NULL;
@@ -108,29 +107,27 @@ void XWindow::resize(const Dimension2D & dim)
 
 void XWindow::refresh() const
 {
-	if(this->double_buffered) {
-		assert(this->display && this->window);
-		glXSwapBuffers(this->display, this->window);
-	}
+	assert(this->display && this->window);
+	glXSwapBuffers(this->display, this->window);
 }
 
 ::Window XWindow::create_window()
 {
 	assert(this->display);
-	const int width = dim.get_width();
-	const int height = dim.get_height();
 	::Window parent = RootWindow(this->display, this->vi->screen);
-	::Window window = XCreateWindow(this->display, parent, 0, 0, width,
-                                        height, 0, this->vi->depth,
-                                        InputOutput, this->vi->visual,
-                                        XWindow::VALUE_MASK, &this->attr);
+	::Window window = XCreateWindow(this->display, parent, 0, 0,
+                                        this->dim.get_width(),
+                                        this->dim.get_height(), 0,
+                                        this->vi->depth, InputOutput,
+                                        this->vi->visual, XWindow::VALUE_MASK,
+                                        &this->attr);
 	Atom wm_delete = XInternAtom(this->display, "WM_DELETE_WINDOW", True);
 
 	const int num_protocols = 1;
 	XSetWMProtocols(this->display, window, &wm_delete, num_protocols);
 	XSetStandardProperties(this->display, window, "Futile", "Futile", None,
                                NULL, 0, NULL);
-	XMapRaised(display, window);
+	XMapRaised(this->display, window);
 
 	return window;
 }
@@ -138,8 +135,8 @@ void XWindow::refresh() const
 }
 
 /* internal */
-static inline XF86VidModeModeInfo get_mode(const futile::Dimension2D & dim,
-                                           Display * display, int screen)
+static XF86VidModeModeInfo get_mode(const futile::Dimension2D & dim,
+                                    Display * display, int screen)
 {
 	int num_modes = 0;
 	XF86VidModeModeInfo ** modes = NULL;
@@ -153,7 +150,8 @@ static inline XF86VidModeModeInfo get_mode(const futile::Dimension2D & dim,
 		XF86VidModeModeInfo * mode = modes[i];
 		if(mode->hdisplay == width && mode->vdisplay == height) {
 			optimal = *mode;
-			break;
+			XFree(modes);
+			return optimal;
 		}
 	}
 
@@ -162,8 +160,7 @@ static inline XF86VidModeModeInfo get_mode(const futile::Dimension2D & dim,
 	return optimal;
 }
 
-static inline XF86VidModeModeInfo get_default_mode(Display * display,
-                                                   int screen)
+static XF86VidModeModeInfo get_default_mode(Display * display, int screen)
 {
 	int num_modes = 0;
 	XF86VidModeModeInfo ** modes = NULL;
@@ -175,8 +172,8 @@ static inline XF86VidModeModeInfo get_default_mode(Display * display,
 	return mode;
 }
 
-static inline XVisualInfo * get_visual_info(Display * display, int screen,
-                                            bool * double_buffered)
+static XVisualInfo * get_visual_info(Display * display, int screen,
+                                     bool * double_buffered)
 {
 	XVisualInfo * vi = glXChooseVisual(display, screen, dbl_buf_attr);
 	if(!(vi)) {
@@ -187,6 +184,13 @@ static inline XVisualInfo * get_visual_info(Display * display, int screen,
 	}
 
 	return vi;
+}
+
+static inline void revert_mode(Display * display, int screen)
+{
+	XF86VidModeModeInfo mode = get_default_mode(display, screen);
+	XF86VidModeSwitchToMode(display, screen, &mode);
+	XF86VidModeSetViewPort(display, screen, 0, 0);
 }
 
 static inline void opengl_init(const futile::Dimension2D & dim)

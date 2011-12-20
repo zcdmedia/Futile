@@ -3,8 +3,8 @@
 	@author		Matthew Hinkle
  */
 
-#ifndef FUTILE_WINDOW_H_
-#define FUTILE_WINDOW_H_
+#ifndef FUTILE_PLATFORM_WINDOW_H_
+#define FUTILE_PLATFORM_WINDOW_H_
 
 #include "dimension2d.h"
 #include "graphics.h"
@@ -12,7 +12,7 @@
 namespace futile {
 
 /**
-	platform independent window interface
+	display window interface
  */
 class Window {
 public:
@@ -23,8 +23,6 @@ public:
 	virtual void destroy() = 0;
 	virtual void resize(const Dimension2D & dim) = 0;
 	virtual void refresh() const = 0;
-
-	static const int DEFAULT_DIM = 1;
 
 protected:
 	Window() { }

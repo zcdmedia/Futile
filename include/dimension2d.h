@@ -4,8 +4,8 @@
 	@brief		simple 2D geometric measurement
  */
 
-#ifndef __DIMENSION2D_H__
-#define __DIMENSION2D_H__
+#ifndef DIMENSION2D_H_
+#define DIMENSION2D_H_
 
 #include <cassert>
 

@@ -1,4 +1,4 @@
-#include "xfullscreenwindow.h"
+#include "platform/xfullscreenwindow.h"
 #include "config.h"
 
 /* internal prototypes */
@@ -24,7 +24,7 @@ static inline void render(futile::Window * window, GLfloat rotation_quad)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
-	glTranslatef(0.0f, 0.0f, -7.0f);
+	glTranslatef(0.0f, 0.0f, -5.0f);
 	glRotatef(rotation_quad, 1.0f, 0.5f, 0.25f);
 	glBegin(GL_QUADS);
 	/* top of cube */                              

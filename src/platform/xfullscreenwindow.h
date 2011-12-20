@@ -3,8 +3,8 @@
 	@author		Matthew Hinkle
  */
 
-#ifndef FUTILE_XFULLSCREENWINDOW_H_
-#define FUTILE_XFULLSCREENWINDOW_H_
+#ifndef FUTILE_PLATFORM_XFULLSCREENWINDOW_H_
+#define FUTILE_PLATFORM_XFULLSCREENWINDOW_H_
 
 #include <cassert>
 
@@ -13,7 +13,7 @@
 namespace futile {
 
 /**
-	Fullscreen XWindow
+	fullscreen XWindow
  */
 class XFullScreenWindow : public XWindow {
 public:

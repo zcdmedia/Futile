@@ -3,8 +3,8 @@
 	@author		Matthew Hinkle
  */
 
-#ifndef FUTILE_XWINDOW_H_
-#define FUTILE_XWINDOW_H_
+#ifndef FUTILE_PLATFORM_XWINDOW_H_
+#define FUTILE_PLATFORM_XWINDOW_H_
 
 #include <X11/Xlib.h>			/* default X11 header */
 #include <X11/Xatom.h>			/* protocol message creation */
