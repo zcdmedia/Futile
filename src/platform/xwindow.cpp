@@ -36,6 +36,8 @@ XWindow::XWindow()
 {
 	this->double_buffered = false;
 	this->dim = Dimension2D(1);
+
+	this->context = NULL;
 	this->display = NULL;
 	this->vi = NULL;
 }
@@ -44,6 +46,8 @@ XWindow::XWindow(const Dimension2D & dim)
 {
 	this->double_buffered = false;
 	this->dim = dim;
+
+	this->context = NULL;
 	this->display = NULL;
 	this->vi = NULL;
 }

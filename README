@@ -12,8 +12,8 @@ ABOUT
 
 PLATFORMS
 
-	Futile currently only works on Linux but eventually aims to support
-	a variety of platforms including, but not limited to:
+	Futile currently only supports Linux but eventually aims to support a
+	variety of platforms including, but not limited to:
 		- Android
 		- iOS
 		- Linux

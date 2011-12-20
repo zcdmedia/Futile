@@ -12,7 +12,7 @@
 
 #include <cassert>
 
-#include "window.h"
+#include "platform/window.h"
 
 namespace futile {
 

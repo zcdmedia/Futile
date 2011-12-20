@@ -15,7 +15,7 @@ namespace futile {
  */
 template<typename T> class Math {
 public:
-	static inline const T clamp(T value, T min, T max) {
+	static inline T clamp(T value, T min, T max) {
 		return std::max(min, std::min(value, max));
 	}
 };

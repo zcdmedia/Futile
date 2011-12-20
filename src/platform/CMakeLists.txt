@@ -2,7 +2,7 @@
 set (CMAKE_CXX_FLAGS "-g")
 
 # source files list
-set (PLATFORM_SRC xwindow.cpp xfullscreenwindow.cpp)
+set (PLATFORM_SRC windowfactory.cpp xwindow.cpp xfullscreenwindow.cpp)
 
 # set the include path
 include_directories (

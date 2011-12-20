@@ -1,12 +1,12 @@
-#include "platform/xfullscreenwindow.h"
 #include "config.h"
+#include "platform/windowfactory.h"
 
 /* internal prototypes */
 static inline void render(futile::Window *, GLfloat);
 
 int main()
 {
-	futile::Window * window = new futile::XFullScreenWindow();
+	futile::Window * window = futile::WindowFactory::create_fullscreen_window();
 	window->init();
 
 	GLfloat rotation_quad = 0.0f;
