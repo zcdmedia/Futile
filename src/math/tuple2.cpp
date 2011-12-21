@@ -56,7 +56,7 @@ void Tuple2::interpolate(const Tuple2 & t, float alpha)
 {
 	const float s = 1 - alpha;
 	this->scale(s);
-	Tuple2 ts = t;
+	Tuple2 ts(t.x, t.y);
 	ts.scale(alpha);
 	this->add(ts);
 }
@@ -80,9 +80,9 @@ void Tuple2::sub(const Tuple2 & t)
 }
 
 /* interfaces */
-Tuple2 Tuple2::clone() const
+Tuple2 * Tuple2::clone() const
 {
-	return Tuple2(this->x, this->y);
+	return new Tuple2(this->x, this->y);
 }
 
 }

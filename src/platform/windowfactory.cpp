@@ -1,7 +1,9 @@
 #include "platform/windowfactory.h"
 
-#include "xwindow.h"
-#include "xfullscreenwindow.h"
+#if defined (__GNUC__)
+# include "xwindow.h"
+# include "xfullscreenwindow.h"
+#endif
 
 namespace futile {
 

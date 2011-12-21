@@ -16,7 +16,7 @@ namespace futile {
 /**
 	2-element tuple abstract class
  */
-class Tuple2 : Cloneable<Tuple2> {
+class Tuple2 : Cloneable<Tuple2 *> {
 public:
 	Tuple2();
 	Tuple2(float x, float y);
@@ -37,13 +37,13 @@ public:
 	void sub(const Tuple2 & t);
 
 	/* interfaces */
-	Tuple2 clone() const;
+	Tuple2 * clone() const;
 
 	float x;
 	float y;
 
 private:
-	Tuple2(const Tuple2 & t);
+	Tuple2(const Tuple2 &);
 	Tuple2 & operator=(const Tuple2 &);
 };
 

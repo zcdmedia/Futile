@@ -7,9 +7,11 @@
 #define FUTILE_WINDOWFACTORY_H_
 
 #include "dimension2d.h"
-#include "platform/window.h"
 
 namespace futile {
+
+/* Window class forward declaration */
+class Window;
 
 /**
 	factory class for creating windows

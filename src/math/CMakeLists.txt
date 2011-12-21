@@ -2,7 +2,10 @@
 set (CMAKE_CXX_FLAGS "-g")
 
 # source files list
-set (MATH_SRC tuple2.cpp tuple3.cpp tuple4.cpp)
+set (MATH_SRC
+	tuple2.cpp tuple3.cpp tuple4.cpp
+	vector2.cpp vector3.cpp vector4.cpp
+)
 
 # set the include path
 include_directories (

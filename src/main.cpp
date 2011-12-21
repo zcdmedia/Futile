@@ -1,4 +1,5 @@
 #include "config.h"
+#include "platform/window.h"
 #include "platform/windowfactory.h"
 
 /* internal prototypes */
