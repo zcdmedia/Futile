@@ -20,12 +20,15 @@ public:
 	XFullScreenWindow();
 	virtual ~XFullScreenWindow();
 
+	virtual void reposition(const Vector2 &);
+	virtual void resize(const Vector2 &);
+
 protected:
 	virtual ::Window create_window();
 
 private:
-	XFullScreenWindow(const XFullScreenWindow & xfswin);
-	XFullScreenWindow & operator=(const XFullScreenWindow & xfswin);
+	XFullScreenWindow(const XFullScreenWindow &);
+	XFullScreenWindow & operator=(const XFullScreenWindow &);
 };
 
 }

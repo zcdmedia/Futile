@@ -1,4 +1,4 @@
-#include "math/vector3.h"
+#include <futile/math/vector3.h>
 
 namespace futile {
 
@@ -50,6 +50,12 @@ void Vector3::normalize()
 	const float length = this->length();
 	if(length == 0) return;
 	this->scale(1.0f / length);
+}
+
+/* interfaces */
+Tuple3 * Vector3::clone() const
+{
+	return new Vector3(this->x, this->y, this->z);
 }
 
 }

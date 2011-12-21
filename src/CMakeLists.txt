@@ -2,7 +2,7 @@
 set (CMAKE_CXX_FLAGS "-g")
 
 # source files list
-set (SRC main.cpp dimension2d.cpp)
+set (SRC main.cpp)
 
 # locate common libraries
 find_package (OpenGL)

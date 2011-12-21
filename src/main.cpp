@@ -1,6 +1,6 @@
-#include "config.h"
-#include "platform/window.h"
-#include "platform/windowfactory.h"
+#include <futile/config.h>
+#include <futile/platform/window.h>
+#include <futile/platform/windowfactory.h>
 
 /* internal prototypes */
 static inline void render(futile::Window *, GLfloat);
@@ -11,7 +11,7 @@ int main()
 	window->init();
 
 	GLfloat rotation_quad = 0.0f;
-	while(rotation_quad < 100.0f) {
+	while(rotation_quad < 500.0f) {
 		render(window, rotation_quad);
 		rotation_quad += 0.8f;
 	}

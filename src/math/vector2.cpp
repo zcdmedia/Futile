@@ -1,4 +1,4 @@
-#include "math/vector2.h"
+#include <futile/math/vector2.h>
 
 namespace futile {
 
@@ -50,6 +50,12 @@ void Vector2::normalize()
 	const float length = this->length();
 	if(length == 0) return;
 	this->scale(1.0f / length);
+}
+
+/* interfaces */
+Tuple2 * Vector2::clone() const
+{
+	return new Vector2(this->x, this->y);
 }
 
 }

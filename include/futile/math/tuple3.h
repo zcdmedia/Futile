@@ -8,21 +8,21 @@
 
 #include <cstdlib>
 
-#include "common/cloneable.h"
-#include "math/math.h"
+#include <futile/cloneable.h>
+#include <futile/math/math.h>
 
 namespace futile {
 
 /**
 	3-element tuple abstract class
  */
-class Tuple3 : Cloneable<Tuple3> {
+class Tuple3 : public Cloneable<Tuple3 *> {
 public:
 	Tuple3();
 	Tuple3(float x, float y, float z);
 	virtual ~Tuple3();
 
-	/* modifiers */
+	/* mutators */
 	void set(float x, float y, float z);
 
 	/* methods */
@@ -37,14 +37,14 @@ public:
 	void sub(const Tuple3 & t);
 
 	/* interfaces */
-	Tuple3 clone() const;
+	virtual Tuple3 * clone() const = 0;
 
 	float x;
 	float y;
 	float z;
 
 private:
-	Tuple3(const Tuple3 & t);
+	Tuple3(const Tuple3 &);
 	Tuple3 & operator=(const Tuple3 &);
 };
 

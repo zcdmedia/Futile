@@ -8,7 +8,7 @@
 
 #include <cmath>
 
-#include "math/tuple2.h"
+#include <futile/math/tuple2.h>
 
 namespace futile {
 
@@ -28,6 +28,8 @@ public:
 	float length() const;
 	float length_squared() const;
 	void normalize();
+
+	virtual Tuple2 * clone() const;
 
 private:
 	Vector2(const Vector2 &);

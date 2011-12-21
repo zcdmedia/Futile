@@ -6,8 +6,8 @@
 #ifndef FUTILE_PLATFORM_WINDOW_H_
 #define FUTILE_PLATFORM_WINDOW_H_
 
-#include "dimension2d.h"
-#include "graphics.h"
+#include <futile/graphics.h>
+#include <futile/math/vector2.h>
 
 namespace futile {
 
@@ -18,10 +18,15 @@ class Window {
 public:
 	virtual ~Window() { }
 
+	/* access */
+	virtual const Vector2 & get_dim() const = 0;
+	virtual const Vector2 & get_pos() const = 0;
+
 	/* methods */
 	virtual void init() = 0;
 	virtual void destroy() = 0;
-	virtual void resize(const Dimension2D & dim) = 0;
+	virtual void reposition(const Vector2 & pos) = 0;
+	virtual void resize(const Vector2 & dim) = 0;
 	virtual void refresh() const = 0;
 
 protected:

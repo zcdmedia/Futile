@@ -14,4 +14,4 @@ include_directories (
 )
 
 # add the executable
-add_library (math ${MATH_SRC})
+add_library (math SHARED ${MATH_SRC})

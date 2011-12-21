@@ -1,4 +1,4 @@
-#include "math/tuple2.h"
+#include <futile/math/tuple2.h>
 
 namespace futile {
 
@@ -19,6 +19,14 @@ void Tuple2::set(float x, float y)
 {
 	this->x = x;
 	this->y = y;
+}
+
+void Tuple2::set(const Tuple2 * t)
+{
+	if(!(t)) return;
+
+	this->x = t->x;
+	this->y = t->y;
 }
 
 /* methods */
@@ -56,9 +64,12 @@ void Tuple2::interpolate(const Tuple2 & t, float alpha)
 {
 	const float s = 1 - alpha;
 	this->scale(s);
-	Tuple2 ts(t.x, t.y);
-	ts.scale(alpha);
-	this->add(ts);
+
+	Tuple2 * tcpy = t.clone();
+	tcpy->scale(alpha);
+	this->add(*tcpy);
+
+	delete tcpy;
 }
 
 void Tuple2::negate()
@@ -77,12 +88,6 @@ void Tuple2::sub(const Tuple2 & t)
 {
 	this->x -= t.x;
 	this->y -= t.y;
-}
-
-/* interfaces */
-Tuple2 * Tuple2::clone() const
-{
-	return new Tuple2(this->x, this->y);
 }
 
 }

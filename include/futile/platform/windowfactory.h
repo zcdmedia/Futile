@@ -6,7 +6,8 @@
 #ifndef FUTILE_WINDOWFACTORY_H_
 #define FUTILE_WINDOWFACTORY_H_
 
-#include "dimension2d.h"
+#include <futile/config.h>
+#include <futile/math/vector2.h>
 
 namespace futile {
 
@@ -20,7 +21,7 @@ class WindowFactory {
 public:
 	~WindowFactory();
 
-	static Window * create_window(const Dimension2D & dim);
+	static Window * create_window(const Vector2 & dim);
 
 	static Window * create_fullscreen_window();
 

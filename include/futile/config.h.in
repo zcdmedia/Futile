@@ -1,0 +1,10 @@
+/* futile version information */
+#define Futile_VERSION_MAJOR @Futile_VERSION_MAJOR@
+#define Futile_VERSION_MINOR @Futile_VERSION_MINOR@
+
+/* build environment information */
+#define Futile_BUILD_SYSTEM_NAME @CMAKE_SYSTEM_NAME@
+
+#define Futile_APPLE @Futile_APPLE@
+#define Futile_LINUX @Futile_LINUX@
+#define Futile_WIN32 @Futile_WIN32@

@@ -1,22 +1,23 @@
-#include "platform/windowfactory.h"
+#include <futile/platform/windowfactory.h>
 
-#if defined (__GNUC__)
+#if Futile_LINUX
 # include "xwindow.h"
 # include "xfullscreenwindow.h"
+# include "xwindowedwindow.h"
 #endif
 
 namespace futile {
 
 WindowFactory::~WindowFactory() { }
 
-Window * WindowFactory::create_window(const Dimension2D & dim)
+Window * WindowFactory::create_window(const Vector2 & dim)
 {
-#if defined (__APPLE__)
+#if Futile_APPLE
 	/* return a cocoa window */
 	return NULL;
-#elif defined (__GNUC__)
-	return new XWindow(dim);
-#elif defined (__WIN32__) || defined (WIN32) || defined (__MINGW32__)
+#elif Futile_LINUX
+	return new XWindowedWindow(dim);
+#elif Futile_WIN32
 	/* return a windows window */
 	return NULL;
 #else
@@ -27,12 +28,12 @@ Window * WindowFactory::create_window(const Dimension2D & dim)
 
 Window * WindowFactory::create_fullscreen_window()
 {
-#if defined (__APPLE__)
+#if Futile_APPLE
 	/* return a cocoa window */
 	return NULL;
-#elif defined (__GNUC__)
+#elif Futile_LINUX
 	return new XFullScreenWindow();
-#elif defined (__WIN32__) || defined (WIN32) || defined (__MINGW32__)
+#elif Futile_WIN32
 	/* return a windows window */
 	return NULL;
 #else

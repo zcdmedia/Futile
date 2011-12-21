@@ -1,4 +1,4 @@
-#include "math/tuple4.h"
+#include <futile/math/tuple4.h>
 
 namespace futile {
 
@@ -68,9 +68,11 @@ void Tuple4::interpolate(const Tuple4 & t, float alpha)
 {
         const float s = 1 - alpha;
         this->scale(s);
-        Tuple4 ts = t;
-        ts.scale(alpha);
-        this->add(ts);
+        Tuple4 * tcpy = t.clone();
+        tcpy->scale(alpha);
+        this->add(*tcpy);
+
+	delete tcpy;
 }
 
 void Tuple4::negate()
@@ -95,12 +97,6 @@ void Tuple4::sub(const Tuple4 & t)
         this->y -= t.y;
 	this->z -= t.z;
 	this->w -= t.w;
-}
-
-/* interfaces */
-Tuple4 Tuple4::clone() const
-{
-        return Tuple4(this->x, this->y, this->z, this->w);
 }
 
 }

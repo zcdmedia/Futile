@@ -12,37 +12,41 @@
 
 #include <cassert>
 
-#include "platform/window.h"
+#include <futile/math/vector2.h>
+#include <futile/platform/window.h>
 
 namespace futile {
 
 /**
-	X11 Window implementation
+	X11 Window abstract class
  */
 class XWindow : public futile::Window {
 public:
 	XWindow();
-	explicit XWindow(const Dimension2D & dim);
 	virtual ~XWindow();
 
 	/* accessors */
-	inline const Dimension2D & get_dimension() const { return this->dim; }
+	virtual const Vector2 & get_dim() const;
+	virtual const Vector2 & get_pos() const;
 
 	/* methods */
 	virtual void init();
 	virtual void destroy();
-	virtual void resize(const Dimension2D & dim);
+	virtual void reposition(const Vector2 & pos);
+	virtual void resize(const Vector2 & dim);
 	virtual void refresh() const;
 
-	static const unsigned long int EVENT_MASK = ExposureMask | KeyPressMask
+	static const unsigned long int EVENT_MASK = ExposureMask
+                                                    | KeyPressMask
                                                     | ButtonPressMask
                                                     | StructureNotifyMask;
-	static const unsigned long int VALUE_MASK = CWBorderPixel | CWColormap
+	static const unsigned long int VALUE_MASK = CWBorderPixel
+                                                    | CWColormap
                                                     | CWEventMask
                                                     | CWOverrideRedirect;
 
 protected:
-	virtual ::Window create_window();
+	virtual ::Window create_window() = 0;
 
 	Display * display;
 	XVisualInfo * vi;
@@ -52,14 +56,15 @@ protected:
 
 	int screen;
 
-	Dimension2D dim;
+	Vector2 dim;
+	Vector2 pos;
 private:
 	GLXContext context;
 
 	bool double_buffered;
 
-	XWindow(const XWindow & xwin);
-	XWindow & operator=(const XWindow & xwin);
+	XWindow(const XWindow &);
+	XWindow & operator=(const XWindow &);
 };
 
 }

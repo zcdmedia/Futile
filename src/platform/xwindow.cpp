@@ -20,32 +20,20 @@ static int dbl_buf_attr[] = {
 };
 
 /* internal prototypes */
-static XF86VidModeModeInfo get_mode(const futile::Dimension2D &, Display *,
-                                    int);
+static XF86VidModeModeInfo get_mode(const futile::Vector2 &, Display *, int);
 static XF86VidModeModeInfo get_default_mode(Display *, int);
 
 static XVisualInfo * get_visual_info(Display *, int, bool *);
 
 static inline void revert_mode(Display *, int);
-static inline void opengl_init(const futile::Dimension2D &);
-static inline void opengl_resize(const futile::Dimension2D &);
+static inline void opengl_init(const futile::Vector2 &);
+static inline void opengl_resize(const futile::Vector2 &);
 
 namespace futile {
 
-XWindow::XWindow()
+XWindow::XWindow() : dim(1, 1), pos(0, 0)
 {
 	this->double_buffered = false;
-	this->dim = Dimension2D(1);
-
-	this->context = NULL;
-	this->display = NULL;
-	this->vi = NULL;
-}
-
-XWindow::XWindow(const Dimension2D & dim)
-{
-	this->double_buffered = false;
-	this->dim = dim;
 
 	this->context = NULL;
 	this->display = NULL;
@@ -55,6 +43,17 @@ XWindow::XWindow(const Dimension2D & dim)
 XWindow::~XWindow()
 {
 	this->destroy();
+}
+
+/* accessors */
+const Vector2 & XWindow::get_pos() const
+{
+	return this->pos;
+}
+
+const Vector2 & XWindow::get_dim() const
+{
+	return this->dim;
 }
 
 void XWindow::init()
@@ -103,9 +102,22 @@ void XWindow::destroy()
 	this->display = NULL;
 }
 
-void XWindow::resize(const Dimension2D & dim)
+void XWindow::reposition(const Vector2 & pos)
 {
-	this->dim = dim;
+	this->pos.set(&pos);
+
+	assert(this->display && this->window);
+	XMoveResizeWindow(this->display, this->window, this->pos.x, this->pos.y,
+                          this->dim.x, this->dim.y);
+}
+
+void XWindow::resize(const Vector2 & dim)
+{
+	this->dim.set(&dim);
+
+	assert(this->display && this->window);
+	XMoveResizeWindow(this->display, this->window, this->pos.x, this->pos.y,
+                          this->dim.x, this->dim.y);
 	opengl_resize(this->dim); 
 }
 
@@ -115,39 +127,18 @@ void XWindow::refresh() const
 	glXSwapBuffers(this->display, this->window);
 }
 
-::Window XWindow::create_window()
-{
-	assert(this->display);
-	::Window parent = RootWindow(this->display, this->vi->screen);
-	::Window window = XCreateWindow(this->display, parent, 0, 0,
-                                        this->dim.get_width(),
-                                        this->dim.get_height(), 0,
-                                        this->vi->depth, InputOutput,
-                                        this->vi->visual, XWindow::VALUE_MASK,
-                                        &this->attr);
-	Atom wm_delete = XInternAtom(this->display, "WM_DELETE_WINDOW", True);
-
-	const int num_protocols = 1;
-	XSetWMProtocols(this->display, window, &wm_delete, num_protocols);
-	XSetStandardProperties(this->display, window, "Futile", "Futile", None,
-                               NULL, 0, NULL);
-	XMapRaised(this->display, window);
-
-	return window;
-}
-
 }
 
 /* internal */
-static XF86VidModeModeInfo get_mode(const futile::Dimension2D & dim,
+static XF86VidModeModeInfo get_mode(const futile::Vector2 & dim,
                                     Display * display, int screen)
 {
 	int num_modes = 0;
 	XF86VidModeModeInfo ** modes = NULL;
 	XF86VidModeGetAllModeLines(display, screen, &num_modes, &modes);
 
-	const int width = dim.get_width();
-	const int height = dim.get_height();
+	const int width = dim.x;
+	const int height = dim.y;
 
 	XF86VidModeModeInfo optimal = get_default_mode(display, screen);
 	for(int i = 0; i < num_modes; i++) {
@@ -197,7 +188,7 @@ static inline void revert_mode(Display * display, int screen)
 	XF86VidModeSetViewPort(display, screen, 0, 0);
 }
 
-static inline void opengl_init(const futile::Dimension2D & dim)
+static inline void opengl_init(const futile::Vector2 & dim)
 {
 	glShadeModel(GL_SMOOTH);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -208,13 +199,10 @@ static inline void opengl_init(const futile::Dimension2D & dim)
 	glFlush();
 }
 
-static inline void opengl_resize(const futile::Dimension2D & dim)
+static inline void opengl_resize(const futile::Vector2 & dim)
 {
-	int width = dim.get_width();
-	int height = dim.get_height();
-	if(height <= 0) {
-		height = 1;
-	}
+	const int width = dim.x <= 0 ? 1 : dim.x;
+	const int height = dim.y <= 0 ? 1 : dim.y;
 
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);

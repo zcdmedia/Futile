@@ -8,7 +8,7 @@
 
 #include <cmath>
 
-#include "math/tuple3.h"
+#include <futile/math/tuple3.h>
 
 namespace futile {
 
@@ -29,6 +29,9 @@ public:
 	float length() const;
 	float length_squared() const;
 	void normalize();
+
+	/* interfaces */
+	virtual Tuple3 * clone() const;
 
 private:
 	Vector3(const Vector3 &);
