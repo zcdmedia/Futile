@@ -1,45 +1,31 @@
 #include <futile/platform/windowfactory.h>
 
-#if Futile_LINUX
-# include "xwindow.h"
-# include "xfullscreenwindow.h"
-# include "xwindowedwindow.h"
+#if Futile_APPLE
+# include "apple/window.h"
+# include "apple/fullscreenwindow.h"
+# include "apple/windowedwindow.h"
+#elif Futile_LINUX
+# include "linux/window.h"
+# include "linux/fullscreenwindow.h"
+# include "linux/windowedwindow.h"
+#elif Futile_WIN32
+# include "win32/window.h"
+# include "win32/fullscreenwindow.h"
+# include "win32/windowedwindow.h"
 #endif
 
 namespace futile {
 
 WindowFactory::~WindowFactory() { }
 
-Window * WindowFactory::create_window(const Vector2 & dim)
+Windowable * WindowFactory::create_window(const Vector2 & dim)
 {
-#if Futile_APPLE
-	/* return a cocoa window */
-	return NULL;
-#elif Futile_LINUX
-	return new XWindowedWindow(dim);
-#elif Futile_WIN32
-	/* return a windows window */
-	return NULL;
-#else
-# error build platform is not supported
-	return NULL;
-#endif
+	return new WindowedWindow(dim);
 }
 
-Window * WindowFactory::create_fullscreen_window()
+Windowable * WindowFactory::create_fullscreen_window()
 {
-#if Futile_APPLE
-	/* return a cocoa window */
-	return NULL;
-#elif Futile_LINUX
-	return new XFullScreenWindow();
-#elif Futile_WIN32
-	/* return a windows window */
-	return NULL;
-#else
-# error build platform is not supported
-	return NULL;
-#endif
+	return new FullScreenWindow();
 }
 
 }

@@ -12,7 +12,7 @@
 namespace futile {
 
 /* Window class forward declaration */
-class Window;
+class Windowable;
 
 /**
 	factory class for creating windows
@@ -21,9 +21,9 @@ class WindowFactory {
 public:
 	~WindowFactory();
 
-	static Window * create_window(const Vector2 & dim);
+	static Windowable * create_window(const Vector2 & dim);
 
-	static Window * create_fullscreen_window();
+	static Windowable * create_fullscreen_window();
 
 private:
 	WindowFactory(const WindowFactory &);

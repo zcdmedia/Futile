@@ -8,7 +8,7 @@
 #define FUTILE_GRAPHICS_H_
 
 /* futile configuration */
-#include "config.h"
+#include <futile/config.h>
 
 /* opengl headers */
 #if Futile_APPLE
@@ -22,11 +22,6 @@
 # include <GL/gl.h>
 # include <GL/glu.h>
 # include <GL/glx.h>
-#endif
-
-/* windows headers */
-#if Futile_WIN32
-# include <windows.h>
 #endif
 
 #endif

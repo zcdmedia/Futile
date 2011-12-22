@@ -1,10 +1,10 @@
 /**
-	@file		window.h
+	@file		windowable.h
 	@author		Matthew Hinkle
  */
 
-#ifndef FUTILE_PLATFORM_WINDOW_H_
-#define FUTILE_PLATFORM_WINDOW_H_
+#ifndef FUTILE_PLATFORM_WINDOWABLE_H_
+#define FUTILE_PLATFORM_WINDOWABLE_H_
 
 #include <futile/graphics.h>
 #include <futile/math/vector2.h>
@@ -14,9 +14,9 @@ namespace futile {
 /**
 	display window interface
  */
-class Window {
+class Windowable {
 public:
-	virtual ~Window() { }
+	virtual ~Windowable() { }
 
 	/* access */
 	virtual const Vector2 & get_dim() const = 0;
@@ -30,11 +30,11 @@ public:
 	virtual void refresh() const = 0;
 
 protected:
-	Window() { }
+	Windowable() { }
 
 private:
-	Window(const Window &);
-	Window & operator=(const Window &);
+	Windowable(const Windowable &);
+	Windowable & operator=(const Windowable &);
 };
 
 }

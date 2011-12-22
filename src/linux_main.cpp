@@ -1,13 +1,13 @@
 #include <futile/config.h>
-#include <futile/platform/window.h>
+#include <futile/platform/windowable.h>
 #include <futile/platform/windowfactory.h>
 
 /* internal prototypes */
-static inline void render(futile::Window *, GLfloat);
+static inline void render(futile::Windowable *, GLfloat);
 
 int main()
 {
-	futile::Window * window = futile::WindowFactory::create_fullscreen_window();
+	futile::Windowable * window = futile::WindowFactory::create_fullscreen_window();
 	window->init();
 
 	GLfloat rotation_quad = 0.0f;
@@ -21,7 +21,8 @@ int main()
 	return 0;
 }
 
-static inline void render(futile::Window * window, GLfloat rotation_quad)
+
+static inline void render(futile::Windowable * window, GLfloat rotation_quad)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();

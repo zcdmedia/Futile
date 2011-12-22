@@ -1,4 +1,4 @@
-#include "xwindow.h"
+#include "window.h"
 
 /* static */
 static int sgl_buf_attr[] = {
@@ -31,7 +31,7 @@ static inline void opengl_resize(const futile::Vector2 &);
 
 namespace futile {
 
-XWindow::XWindow() : dim(1, 1), pos(0, 0)
+Window::Window() : dim(1, 1), pos(0, 0)
 {
 	this->double_buffered = false;
 
@@ -40,23 +40,23 @@ XWindow::XWindow() : dim(1, 1), pos(0, 0)
 	this->vi = NULL;
 }
 
-XWindow::~XWindow()
+Window::~Window()
 {
 	this->destroy();
 }
 
 /* accessors */
-const Vector2 & XWindow::get_pos() const
+const Vector2 & Window::get_pos() const
 {
 	return this->pos;
 }
 
-const Vector2 & XWindow::get_dim() const
+const Vector2 & Window::get_dim() const
 {
 	return this->dim;
 }
 
-void XWindow::init()
+void Window::init()
 {
 	this->display = XOpenDisplay(0);
 	this->screen = DefaultScreen(this->display);
@@ -82,7 +82,7 @@ void XWindow::init()
 	opengl_init(this->dim);
 }
 
-void XWindow::destroy()
+void Window::destroy()
 {
 	if(!(this->display)) return;
 
@@ -102,7 +102,7 @@ void XWindow::destroy()
 	this->display = NULL;
 }
 
-void XWindow::reposition(const Vector2 & pos)
+void Window::reposition(const Vector2 & pos)
 {
 	this->pos.set(&pos);
 
@@ -111,7 +111,7 @@ void XWindow::reposition(const Vector2 & pos)
                           this->dim.x, this->dim.y);
 }
 
-void XWindow::resize(const Vector2 & dim)
+void Window::resize(const Vector2 & dim)
 {
 	this->dim.set(&dim);
 
@@ -121,7 +121,7 @@ void XWindow::resize(const Vector2 & dim)
 	opengl_resize(this->dim); 
 }
 
-void XWindow::refresh() const
+void Window::refresh() const
 {
 	assert(this->display && this->window);
 	glXSwapBuffers(this->display, this->window);
@@ -215,4 +215,5 @@ static inline void opengl_resize(const futile::Vector2 & dim)
 	const GLfloat z_far = 100.0f;
 	gluPerspective(y_field_of_view, aspect, z_near, z_far);
 	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 }

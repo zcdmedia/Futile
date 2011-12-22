@@ -2,11 +2,18 @@
 set (CMAKE_CXX_FLAGS "-g")
 
 # source files list
-set (SRC main.cpp)
+if (Futile_LINUX)
+	set (SRC linux_main.cpp)
+elseif (Futile_WIN32)
+	set (SRC win32_main.cpp)
+endif ()
 
 # locate common libraries
 find_package (OpenGL)
-find_package (X11)
+
+if (${Futile_LINUX})
+	find_package (X11)
+endif ()
 
 # locate other libraries
 find_library (Xxf86vm_LIBRARY Xxf86vm ${X11_LIB_SEARCH_PATH})

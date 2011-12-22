@@ -1,10 +1,10 @@
 /**
-	@file		xwindow.h
+	@file		window.h
 	@author		Matthew Hinkle
  */
 
-#ifndef FUTILE_PLATFORM_XWINDOW_H_
-#define FUTILE_PLATFORM_XWINDOW_H_
+#ifndef FUTILE_PLATFORM_LINUX_WINDOW_H_
+#define FUTILE_PLATFORM_LINUX_WINDOW_H_
 
 #include <X11/Xlib.h>			/* default X11 header */
 #include <X11/Xatom.h>			/* protocol message creation */
@@ -13,17 +13,17 @@
 #include <cassert>
 
 #include <futile/math/vector2.h>
-#include <futile/platform/window.h>
+#include <futile/platform/windowable.h>
 
 namespace futile {
 
 /**
 	X11 Window abstract class
  */
-class XWindow : public futile::Window {
+class Window : public Windowable {
 public:
-	XWindow();
-	virtual ~XWindow();
+	Window();
+	virtual ~Window();
 
 	/* accessors */
 	virtual const Vector2 & get_dim() const;
@@ -63,8 +63,8 @@ private:
 
 	bool double_buffered;
 
-	XWindow(const XWindow &);
-	XWindow & operator=(const XWindow &);
+	Window(const Window &);
+	Window & operator=(const Window &);
 };
 
 }

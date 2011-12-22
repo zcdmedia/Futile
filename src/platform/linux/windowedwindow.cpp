@@ -1,22 +1,22 @@
-#include "xwindowedwindow.h"
+#include "windowedwindow.h"
 
 namespace futile {
 
-XWindowedWindow::XWindowedWindow() : XWindow() { }
+WindowedWindow::WindowedWindow() : Window() { }
 
-XWindowedWindow::XWindowedWindow(const Vector2 & dim) : XWindow()
+WindowedWindow::WindowedWindow(const Vector2 & dim) : Window()
 {
 	this->dim.set(&dim);
 }
 
-XWindowedWindow::XWindowedWindow(const Vector2 & dim, const Vector2 & pos)
-	: XWindow()
+WindowedWindow::WindowedWindow(const Vector2 & dim, const Vector2 & pos)
+	: Window()
 {
 	this->dim.set(&dim);
 	this->pos.set(&pos);
 }
 
-::Window XWindowedWindow::create_window()
+::Window WindowedWindow::create_window()
 {
         assert(this->display);
         ::Window parent = RootWindow(this->display, this->vi->screen);
@@ -24,7 +24,7 @@ XWindowedWindow::XWindowedWindow(const Vector2 & dim, const Vector2 & pos)
                                         this->pos.x, this->pos.y,
                                         this->dim.x, this->dim.y, 0,
                                         this->vi->depth, InputOutput,
-                                        this->vi->visual, XWindow::VALUE_MASK,
+                                        this->vi->visual, Window::VALUE_MASK,
                                         &this->attr);
         Atom wm_delete = XInternAtom(this->display, "WM_DELETE_WINDOW", True);
 

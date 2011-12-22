@@ -5,9 +5,6 @@ project (Futile)
 set (Futile_VERSION_MAJOR 0)
 set (Futile_VERSION_MINOR 0)
 
-# source
-add_subdirectory(src)
-
 # set build environment information
 # check for apple (doesn't necessarily mean Mac OS X)
 if (${APPLE})
@@ -29,6 +26,9 @@ if (${WIN32})
 else ()
 	set (Futile_WIN32 0)
 endif ()
+
+# source
+add_subdirectory(src)
 
 # config header file
 configure_file (
