@@ -90,4 +90,10 @@ void Tuple2::sub(const Tuple2 & t)
 	this->y -= t.y;
 }
 
+/* interface */
+bool Tuple2::equals(const Tuple2 * t) const
+{
+	return t && this->x == t->x && this->y == t->y;
+}
+
 }

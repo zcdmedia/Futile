@@ -1,7 +1,7 @@
 /**
 	@file		graphics.h
 	@author		Matthew Hinkle
-	@brief		platform independent include for the graphics library
+	@brief		platform independent header for the graphics library
  */
 
 #ifndef FUTILE_GRAPHICS_H_
@@ -17,7 +17,6 @@
 #elif Futile_WIN32
 # include <gl/gl.h>
 # include <gl/glu.h>
-# include <gl/glaux.h>
 #else
 # include <GL/gl.h>
 # include <GL/glu.h>

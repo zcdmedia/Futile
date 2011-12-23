@@ -9,6 +9,7 @@
 #include <cstdlib>
 
 #include <futile/cloneable.h>
+#include <futile/equatable.h>
 #include <futile/math/math.h>
 
 namespace futile {
@@ -16,7 +17,7 @@ namespace futile {
 /**
 	2-element tuple abstract class
  */
-class Tuple2 : public Cloneable<Tuple2 *> {
+class Tuple2 : public Cloneable<Tuple2 *>, public Equatable<const Tuple2 *> {
 public:
 	Tuple2();
 	Tuple2(float x, float y);
@@ -39,6 +40,7 @@ public:
 
 	/* interfaces */
 	virtual Tuple2 * clone() const = 0;
+	virtual bool equals(const Tuple2 * t) const;
 
 	float x;
 	float y;

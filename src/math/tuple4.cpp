@@ -99,4 +99,11 @@ void Tuple4::sub(const Tuple4 & t)
 	this->w -= t.w;
 }
 
+/* interface */
+bool Tuple4::equals(const Tuple4 * t) const
+{
+	return t && this->x == t->x && this->y == t->y && this->z == t->z
+               && this->w == t->w;
+}
+
 }

@@ -90,4 +90,9 @@ void Tuple3::sub(const Tuple3 & t)
 	this->z -= t.z;
 }
 
+bool Tuple3::equals(const Tuple3 * t) const
+{
+	return t && this->x == t->x && this->y == t->y && this->z == t->z;
+}
+
 }
