@@ -26,13 +26,14 @@ static XF86VidModeModeInfo get_default_mode(Display *, int);
 static XVisualInfo * get_visual_info(Display *, int, bool *);
 
 static inline void revert_mode(Display *, int);
-static inline void opengl_init(const futile::Vector2 &);
-static inline void opengl_resize(const futile::Vector2 &);
 
 namespace futile {
 
-Window::Window() : dim(1, 1), pos(0, 0)
+Window::Window(GraphicsEnvironment * gfxenv) : pos(0, 0)
 {
+	this->gfxenv = gfxenv;
+	assert(this->gfxenv);
+
 	this->double_buffered = false;
 
 	this->context = NULL;
@@ -45,22 +46,11 @@ Window::~Window()
 	this->destroy();
 }
 
-/* accessors */
-const Vector2 & Window::get_pos() const
-{
-	return this->pos;
-}
-
-const Vector2 & Window::get_dim() const
-{
-	return this->dim;
-}
-
 void Window::init()
 {
 	this->display = XOpenDisplay(0);
 	this->screen = DefaultScreen(this->display);
-	this->mode = get_mode(this->dim, this->display, this->screen);
+	this->mode = get_mode(this->get_dim(), this->display, this->screen);
 	this->vi = get_visual_info(this->display, this->screen,
                                    &this->double_buffered);
 	assert(this->vi);
@@ -76,10 +66,9 @@ void Window::init()
 	this->attr.event_mask = EVENT_MASK;
 	this->window = this->create_window();
 
-	bool context_is_set = glXMakeCurrent(this->display, this->window,
-                                             this->context);
-	assert(context_is_set);
-	opengl_init(this->dim);
+	bool set = glXMakeCurrent(this->display, this->window, this->context);
+	assert(set);
+	this->gfxenv->init();
 }
 
 void Window::destroy()
@@ -106,22 +95,21 @@ void Window::reposition(const Vector2 & pos)
 {
 	this->pos.set(&pos);
 
+	const Vector2 & dim = this->get_dim();
 	assert(this->display && this->window);
 	XMoveResizeWindow(this->display, this->window, this->pos.x, this->pos.y,
-                          this->dim.x, this->dim.y);
+                          dim.x, dim.y);
 }
 
 void Window::resize(const Vector2 & dim)
 {
-	this->dim.set(&dim);
-
+	this->gfxenv->resize(dim);
 	assert(this->display && this->window);
 	XMoveResizeWindow(this->display, this->window, this->pos.x, this->pos.y,
-                          this->dim.x, this->dim.y);
-	opengl_resize(this->dim); 
+                          dim.x, dim.y);
 }
 
-void Window::refresh() const
+void Window::refresh()
 {
 	assert(this->display && this->window);
 	glXSwapBuffers(this->display, this->window);
@@ -186,34 +174,4 @@ static inline void revert_mode(Display * display, int screen)
 	XF86VidModeModeInfo mode = get_default_mode(display, screen);
 	XF86VidModeSwitchToMode(display, screen, &mode);
 	XF86VidModeSetViewPort(display, screen, 0, 0);
-}
-
-static inline void opengl_init(const futile::Vector2 & dim)
-{
-	glShadeModel(GL_SMOOTH);
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glClearDepth(1.0f);
-	glEnable(GL_DEPTH_TEST);
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	opengl_resize(dim);
-	glFlush();
-}
-
-static inline void opengl_resize(const futile::Vector2 & dim)
-{
-	const int width = dim.x <= 0 ? 1 : dim.x;
-	const int height = dim.y <= 0 ? 1 : dim.y;
-
-	glViewport(0, 0, width, height);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-
-	const GLfloat y_field_of_view = 45.0f;
-	const GLfloat aspect = static_cast<GLfloat>(width)
-                               / static_cast<GLfloat>(height);
-	const GLfloat z_near = 0.1f;
-	const GLfloat z_far = 100.0f;
-	gluPerspective(y_field_of_view, aspect, z_near, z_far);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
 }

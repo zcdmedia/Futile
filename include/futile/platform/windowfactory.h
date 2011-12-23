@@ -7,11 +7,12 @@
 #define FUTILE_WINDOWFACTORY_H_
 
 #include <futile/config.h>
+#include <futile/graphics/graphicsenvironment.h>
 #include <futile/math/vector2.h>
 
 namespace futile {
 
-/* Window class forward declaration */
+/* Windowable class forward declaration */
 class Windowable;
 
 /**
@@ -21,11 +22,13 @@ class WindowFactory {
 public:
 	~WindowFactory();
 
-	static Windowable * create_window(const Vector2 & dim);
+	static Windowable * create_window(GraphicsEnvironment * gfxenv);
 
-	static Windowable * create_fullscreen_window();
+	static Windowable * create_fullscreen_window(
+		GraphicsEnvironment * gfxenv);
 
 private:
+	WindowFactory();
 	WindowFactory(const WindowFactory &);
 	WindowFactory & operator=(const WindowFactory &);
 };

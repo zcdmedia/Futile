@@ -16,6 +16,7 @@ namespace futile {
  */
 class GraphicsEnvironmentFactory {
 public:
+	static GraphicsEnvironment * create_opengl_environment();
 	static GraphicsEnvironment * create_opengl_environment(
 		const Vector2 & dim);
 
@@ -24,7 +25,7 @@ private:
 	GraphicsEnvironmentFactory(const GraphicsEnvironmentFactory &);
 	GraphicsEnvironmentFactory & operator=(
 		const GraphicsEnvironmentFactory &);
-}
+};
 
 }
 

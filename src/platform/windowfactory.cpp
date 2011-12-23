@@ -18,14 +18,15 @@ namespace futile {
 
 WindowFactory::~WindowFactory() { }
 
-Windowable * WindowFactory::create_window(const Vector2 & dim)
+Windowable * WindowFactory::create_window(GraphicsEnvironment * gfxenv)
 {
-	return new WindowedWindow(dim);
+	return new WindowedWindow(gfxenv);
 }
 
-Windowable * WindowFactory::create_fullscreen_window()
+Windowable * WindowFactory::create_fullscreen_window(
+	GraphicsEnvironment * gfxenv)
 {
-	return new FullScreenWindow();
+	return new FullScreenWindow(gfxenv);
 }
 
 }

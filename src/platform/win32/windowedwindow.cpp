@@ -23,7 +23,7 @@ DWORD WindowedWindow::get_style() const
 
 DWORD WindowedWindow::get_extended_style() const
 {
-	return WS_ES_APPWINDOW | WS_EX_WINDOWEDGE;
+	return WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
 }
 
 }

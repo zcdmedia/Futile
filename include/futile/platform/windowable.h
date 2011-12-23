@@ -6,7 +6,7 @@
 #ifndef FUTILE_PLATFORM_WINDOWABLE_H_
 #define FUTILE_PLATFORM_WINDOWABLE_H_
 
-#include <futile/graphics.h>
+#include <futile/graphics/graphics.h>
 #include <futile/math/vector2.h>
 
 namespace futile {
@@ -27,7 +27,7 @@ public:
 	virtual void destroy() = 0;
 	virtual void reposition(const Vector2 & pos) = 0;
 	virtual void resize(const Vector2 & dim) = 0;
-	virtual void refresh() const = 0;
+	virtual void refresh() = 0;
 
 protected:
 	Windowable() { }

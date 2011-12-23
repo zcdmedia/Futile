@@ -27,6 +27,7 @@ public:
 	virtual void refresh() = 0;
 
 protected:
+	GraphicsEnvironment();
 	GraphicsEnvironment(const Vector2 & dim);
 
 	Vector2 dim;

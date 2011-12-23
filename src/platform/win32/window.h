@@ -6,6 +6,8 @@
 #ifndef FUTILE_PLATFORM_WIN32_WINDOW_H_
 #define FUTILE_PLATFORM_WIN32_WINDOW_H_
 
+#include <cassert>
+
 #include <windows.h>
 
 #include <futile/math/vector2.h>
@@ -30,7 +32,7 @@ public:
 	virtual void destroy();
 	virtual void reposition(const Vector2 & pos);
 	virtual void resize(const Vector2 & dim);
-	virtual void refresh() const;
+	virtual void refresh();
 
 protected:
 	virtual DWORD get_style() const = 0;

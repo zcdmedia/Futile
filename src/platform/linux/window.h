@@ -12,6 +12,7 @@
 
 #include <cassert>
 
+#include <futile/graphics/graphicsenvironment.h>
 #include <futile/math/vector2.h>
 #include <futile/platform/windowable.h>
 
@@ -22,19 +23,23 @@ namespace futile {
  */
 class Window : public Windowable {
 public:
-	Window();
+	explicit Window(GraphicsEnvironment * gfxenv);
 	virtual ~Window();
 
 	/* accessors */
-	virtual const Vector2 & get_dim() const;
-	virtual const Vector2 & get_pos() const;
+	const Vector2 & get_dim() const
+	{
+		assert(this->gfxenv);
+		return this->gfxenv->get_dim();
+	}
+	const Vector2 & get_pos() const { return this->pos; }
 
 	/* methods */
 	virtual void init();
 	virtual void destroy();
 	virtual void reposition(const Vector2 & pos);
 	virtual void resize(const Vector2 & dim);
-	virtual void refresh() const;
+	virtual void refresh();
 
 	static const unsigned long int EVENT_MASK = ExposureMask
                                                     | KeyPressMask
@@ -54,15 +59,17 @@ protected:
 	XSetWindowAttributes attr;
 	XF86VidModeModeInfo mode;
 
+	GraphicsEnvironment * gfxenv;
+
 	int screen;
 
-	Vector2 dim;
 	Vector2 pos;
 private:
 	GLXContext context;
 
 	bool double_buffered;
 
+	Window();
 	Window(const Window &);
 	Window & operator=(const Window &);
 };

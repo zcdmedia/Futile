@@ -1,12 +1,13 @@
 #include "window.h"
 
 /* internal prototypes */
-static inline void init_window_rect(const Vector2 &, const Vector2 &, RECT *);
-static inline void init_extended_class(WNDCLASSEX *);
+static inline void init_window_rect(const futile::Vector2 &,
+                                    const futile::Vector2 &, RECT *);
+static inline void init_extended_class(const HINSTANCE &, WNDCLASSEX *);
 static inline void register_extended_class(WNDCLASSEX *);
 
-static inline void opengl_init(HWND, HGLDC *);
-static inline void opengl_resize(HWND, const Vector2 &);
+static inline void opengl_init(HWND, HGLRC *);
+static inline void opengl_resize(HWND, const futile::Vector2 &);
 static inline void configure_pixel_format(HDC);
 
 namespace futile {
@@ -47,7 +48,6 @@ void Window::init()
 
 	assert(this->handle);
 	ShowWindow(this->handle, SW_SHOW);
-	this->refresh();
 }
 
 void Window::destroy()
@@ -76,7 +76,7 @@ void Window::resize(const Vector2 & dim)
 	assert(moved == TRUE);
 }
 
-void Window::refresh() const
+void Window::refresh()
 {
 	UpdateWindow(this->handle);
 }
@@ -84,18 +84,16 @@ void Window::refresh() const
 }
 
 /* internal */
-static inline void init_window_rect(const Vector2 & dim, const Vector2 & pos,
-                                    RECT * rect)
+static inline void init_window_rect(const futile::Vector2 & dim,
+                                    const futile::Vector2 & pos, RECT * rect)
 {
 	assert(rect);
 	rect->left = static_cast<long int>(pos.x);
 
-	const int width = dim.x;
-	rect->right = rect->left + static_cast<long int>(width);
+	rect->right = rect->left + static_cast<long int>(dim.x);
 	rect->top = static_cast<long int>(pos.y);
 
-	const int height = dim.y;
-	rect->bottom = rect->top + static_cast<long int>(height);
+	rect->bottom = rect->top + static_cast<long int>(dim.y);
 }
 
 static inline void init_extended_class(const HINSTANCE & inst,
@@ -130,7 +128,7 @@ static inline void opengl_init(HWND handle, HGLRC * context)
 	wglMakeCurrent(device_context, glcontext);
 }
 
-static inline void opengl_resize(HWND handle, const Vector2 & dim)
+static inline void opengl_resize(HWND handle, const futile::Vector2 & dim)
 {
 	const int width = dim.x <= 0 ? 1 : dim.x;
 	const int height = dim.y <= 0 ? 1 : dim.y;

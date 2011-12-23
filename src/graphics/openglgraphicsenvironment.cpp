@@ -2,6 +2,9 @@
 
 namespace futile {
 
+OpenGLGraphicsEnvironment::OpenGLGraphicsEnvironment()
+	: GraphicsEnvironment() { }
+
 OpenGLGraphicsEnvironment::OpenGLGraphicsEnvironment(const Vector2 & dim)
 	: GraphicsEnvironment(dim) { }
 
@@ -19,10 +22,11 @@ void OpenGLGraphicsEnvironment::init()
 	glFlush();
 }
 
-void OpenGLGraphicsEnvironment::resize
+void OpenGLGraphicsEnvironment::resize(const Vector2 & dim)
 {
-	const int width = dim.x <= 0 ? 1 : dim.x;
-	const int height = dim.y <= 0 ? 1 : dim.y;
+	this->dim.set(&dim);
+	const int width = this->dim.x <= 0.0f ? 1.0f : static_cast<int>(dim.x);
+	const int height = this->dim.y <= 0.0f ? 1.0f : static_cast<int>(dim.y);
 
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
@@ -36,4 +40,8 @@ void OpenGLGraphicsEnvironment::resize
 	gluPerspective(y_field_of_view, aspect, z_near, z_far);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+void OpenGLGraphicsEnvironment::refresh() { }
+
 }

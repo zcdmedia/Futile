@@ -1,4 +1,6 @@
 #include <futile/config.h>
+#include <futile/graphics/graphicsenvironment.h>
+#include <futile/graphics/graphicsenvironmentfactory.h>
 #include <futile/platform/windowable.h>
 #include <futile/platform/windowfactory.h>
 
@@ -7,7 +9,11 @@ static inline void render(futile::Windowable *, GLfloat);
 
 int main()
 {
-	futile::Windowable * window = futile::WindowFactory::create_fullscreen_window();
+	futile::GraphicsEnvironment * gfxenv =
+		futile::GraphicsEnvironmentFactory::create_opengl_environment();
+
+	futile::Windowable * window =
+		futile::WindowFactory::create_fullscreen_window(gfxenv);
 	window->init();
 
 	GLfloat rotation_quad = 0.0f;

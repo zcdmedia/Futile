@@ -12,6 +12,7 @@ namespace futile {
 
 class OpenGLGraphicsEnvironment : public GraphicsEnvironment {
 public:
+	OpenGLGraphicsEnvironment();
 	OpenGLGraphicsEnvironment(const Vector2 & dim);
 	virtual ~OpenGLGraphicsEnvironment();
 
@@ -19,6 +20,10 @@ public:
 	virtual void init();
 	virtual void resize(const Vector2 & dim);
 	virtual void refresh();
+private:
+	OpenGLGraphicsEnvironment(const OpenGLGraphicsEnvironment &);
+	OpenGLGraphicsEnvironment & operator=(
+		const OpenGLGraphicsEnvironment &);
 };
 
 }

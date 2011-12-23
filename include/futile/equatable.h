@@ -4,7 +4,7 @@
  */
 
 #ifndef FUTILE_EQUATABLE_H_
-#define FUTILE_EQUAEABLE_H_
+#define FUTILE_EQUATABLE_H_
 
 namespace futile {
 
@@ -13,7 +13,7 @@ namespace futile {
  */
 template<typename T> class Equatable {
 public:
-	virtual bool equals(const T &) const = 0;
+	virtual bool equals(T) const = 0;
 };
 
 }

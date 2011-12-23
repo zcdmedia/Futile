@@ -20,11 +20,13 @@ public:
 	FullScreenWindow();
 	virtual ~FullScreenWindow();
 
+	virtual void init();
 	virtual void reposition(const Vector2 &);
 	virtual void resize(const Vector2 &);
 
 protected:
-	virtual ::Window create_window();
+	virtual DWORD get_style() const;
+	virtual DWORD get_extended_style() const;
 
 private:
 	FullScreenWindow(const FullScreenWindow &);

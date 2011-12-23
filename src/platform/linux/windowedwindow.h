@@ -17,14 +17,14 @@ namespace futile {
  */
 class WindowedWindow : public Window {
 public:
-	WindowedWindow();
-	explicit WindowedWindow(const Vector2 & dim);
-	WindowedWindow(const Vector2 & dim, const Vector2 & pos);
+	WindowedWindow(GraphicsEnvironment * gfxenv);
+	WindowedWindow(GraphicsEnvironment * gfxenv, const Vector2 & pos);
 
 protected:
 	virtual ::Window create_window();
 
 private:
+	WindowedWindow();
 	WindowedWindow(const WindowedWindow &);
 	WindowedWindow & operator=(const WindowedWindow &);
 };
