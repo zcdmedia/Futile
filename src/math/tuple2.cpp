@@ -21,12 +21,10 @@ void Tuple2::set(float x, float y)
 	this->y = y;
 }
 
-void Tuple2::set(const Tuple2 * t)
+void Tuple2::set(const Tuple2 & t)
 {
-	if(!(t)) return;
-
-	this->x = t->x;
-	this->y = t->y;
+	this->x = t.x;
+	this->y = t.y;
 }
 
 /* methods */

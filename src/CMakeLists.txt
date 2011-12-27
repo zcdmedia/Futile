@@ -1,9 +1,9 @@
 # compiler flags
-set (CMAKE_CXX_FLAGS "-g")
+set (CMAKE_CXX_FLAGS "-g -lpng")
 
 # source files list
 if (Futile_LINUX)
-	set (SRC linux_main.cpp)
+	set (SRC linux_main.cpp rawbuffer.cpp)
 elseif (Futile_WIN32)
 	set (SRC win32_main.cpp)
 endif ()
@@ -38,7 +38,7 @@ include_directories (
 )
 
 # add the executable
-add_executable (futile ${SRC})
+add_executable (futile ${SRC} pngio.c)
 
 # link all libraries
 target_link_libraries (futile ${LIB})

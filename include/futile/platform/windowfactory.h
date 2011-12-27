@@ -7,7 +7,7 @@
 #define FUTILE_WINDOWFACTORY_H_
 
 #include <futile/config.h>
-#include <futile/graphics/graphicsenvironment.h>
+#include <futile/graphics/graphicscontext.h>
 #include <futile/math/vector2.h>
 
 namespace futile {
@@ -22,10 +22,8 @@ class WindowFactory {
 public:
 	~WindowFactory();
 
-	static Windowable * create_window(GraphicsEnvironment * gfxenv);
-
-	static Windowable * create_fullscreen_window(
-		GraphicsEnvironment * gfxenv);
+	static Windowable * create_window(GraphicsContext * gfxenv);
+	static Windowable * create_fullscreen_window(GraphicsContext * gfxenv);
 
 private:
 	WindowFactory();

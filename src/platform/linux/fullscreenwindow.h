@@ -8,8 +8,6 @@
 
 #include <cassert>
 
-#include <futile/graphics/graphicsenvironmentfactory.h>
-
 #include "window.h"
 
 namespace futile {
@@ -19,7 +17,7 @@ namespace futile {
  */
 class FullScreenWindow : public Window {
 public:
-	explicit FullScreenWindow(GraphicsEnvironment * gfxenv);
+	explicit FullScreenWindow(GraphicsContext * gfxctx);
 	virtual ~FullScreenWindow();
 
 	virtual void reposition(const Vector2 &);

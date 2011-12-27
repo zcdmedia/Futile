@@ -2,14 +2,12 @@
 
 namespace futile {
 
-WindowedWindow::WindowedWindow(GraphicsEnvironment * gfxenv)
-	: Window(gfxenv) { }
+WindowedWindow::WindowedWindow(GraphicsContext * gfxctx) : Window(gfxctx) { }
 
-WindowedWindow::WindowedWindow(GraphicsEnvironment * gfxenv,
-                               const Vector2 & pos)
-	: Window(gfxenv)
+WindowedWindow::WindowedWindow(GraphicsContext * gfxctx, const Vector2 & pos)
+	: Window(gfxctx)
 {
-	this->pos.set(&pos);
+	this->pos.set(pos);
 }
 
 ::Window WindowedWindow::create_window()

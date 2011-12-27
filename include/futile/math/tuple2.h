@@ -25,7 +25,7 @@ public:
 
 	/* mutators */
 	void set(float x, float y);
-	void set(const Tuple2 * t);
+	void set(const Tuple2 & t);
 
 	/* methods */
 	void absolute();

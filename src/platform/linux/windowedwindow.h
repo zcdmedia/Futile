@@ -17,8 +17,8 @@ namespace futile {
  */
 class WindowedWindow : public Window {
 public:
-	WindowedWindow(GraphicsEnvironment * gfxenv);
-	WindowedWindow(GraphicsEnvironment * gfxenv, const Vector2 & pos);
+	WindowedWindow(GraphicsContext * gfxctx);
+	WindowedWindow(GraphicsContext * gfxctx, const Vector2 & pos);
 
 protected:
 	virtual ::Window create_window();

@@ -3,8 +3,9 @@ set (CMAKE_CXX_FLAGS "-g")
 
 # source files list
 set (SRC
-	graphicsenvironment.cpp graphicsenvironmentfactory.cpp
-	openglgraphicsenvironment.cpp
+	graphicscontext.cpp graphicscontext2d.cpp graphicscontext3d.cpp
+	graphicscontextfactory.cpp
+	texture.cpp texture2d.cpp
 )
 
 # set the include path

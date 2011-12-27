@@ -12,7 +12,7 @@
 
 #include <cassert>
 
-#include <futile/graphics/graphicsenvironment.h>
+#include <futile/graphics/graphicscontext.h>
 #include <futile/math/vector2.h>
 #include <futile/platform/windowable.h>
 
@@ -23,14 +23,14 @@ namespace futile {
  */
 class Window : public Windowable {
 public:
-	explicit Window(GraphicsEnvironment * gfxenv);
+	explicit Window(GraphicsContext * gfxctx);
 	virtual ~Window();
 
 	/* accessors */
 	const Vector2 & get_dim() const
 	{
-		assert(this->gfxenv);
-		return this->gfxenv->get_dim();
+		assert(this->gfxctx);
+		return this->gfxctx->get_dim();
 	}
 	const Vector2 & get_pos() const { return this->pos; }
 
@@ -59,7 +59,7 @@ protected:
 	XSetWindowAttributes attr;
 	XF86VidModeModeInfo mode;
 
-	GraphicsEnvironment * gfxenv;
+	GraphicsContext * gfxctx;
 
 	int screen;
 

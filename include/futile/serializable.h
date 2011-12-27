@@ -6,16 +6,17 @@
 #ifndef FUTILE_SERIALIZABLE_H_
 #define FUTILE_SERIALIZABLE_H_
 
+#include <futile/rawbuffer.h>
+
 namespace futile {
 
 /**
-	interface for classes that need to provide
-	serialization/deserialization functionality
+	interface for classes that need to be written to media
  */
-class Serializable {
+template<typename T> class Serializable {
 public:
-	virtual void serialize() const = 0;
-	virtual void deserialize() = 0;
+	virtual RawBuffer * serialize() const = 0;
+	virtual T deserialize(const RawBuffer & data) = 0;
 };
 
 }

@@ -1,30 +1,27 @@
-#include "openglgraphicsenvironment.h"
+#include "graphicscontext3d.h"
 
 namespace futile {
 
-OpenGLGraphicsEnvironment::OpenGLGraphicsEnvironment()
-	: GraphicsEnvironment() { }
+GraphicsContext3D::GraphicsContext3D() : GraphicsContext() { }
 
-OpenGLGraphicsEnvironment::OpenGLGraphicsEnvironment(const Vector2 & dim)
-	: GraphicsEnvironment(dim) { }
+GraphicsContext3D::GraphicsContext3D(const Vector2 & dim)
+	: GraphicsContext(dim) { }
 
-OpenGLGraphicsEnvironment::~OpenGLGraphicsEnvironment() { }
+GraphicsContext3D::~GraphicsContext3D() { }
 
 /* methods */
-void OpenGLGraphicsEnvironment::init()
+void GraphicsContext3D::init()
 {
-	glShadeModel(GL_SMOOTH);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glClearDepth(1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	this->resize(this->dim);
 	glFlush();
 }
 
-void OpenGLGraphicsEnvironment::resize(const Vector2 & dim)
+void GraphicsContext3D::resize(const Vector2 & dim)
 {
-	this->dim.set(&dim);
+	this->dim.set(dim);
 	const int width = this->dim.x <= 0.0f ? 1.0f : static_cast<int>(dim.x);
 	const int height = this->dim.y <= 0.0f ? 1.0f : static_cast<int>(dim.y);
 
@@ -42,6 +39,6 @@ void OpenGLGraphicsEnvironment::resize(const Vector2 & dim)
 	glLoadIdentity();
 }
 
-void OpenGLGraphicsEnvironment::refresh() { }
+void GraphicsContext3D::refresh() { }
 
 }

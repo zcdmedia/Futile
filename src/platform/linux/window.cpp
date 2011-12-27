@@ -29,10 +29,10 @@ static inline void revert_mode(Display *, int);
 
 namespace futile {
 
-Window::Window(GraphicsEnvironment * gfxenv) : pos(0, 0)
+Window::Window(GraphicsContext * gfxctx) : pos(0, 0)
 {
-	this->gfxenv = gfxenv;
-	assert(this->gfxenv);
+	this->gfxctx = gfxctx;
+	assert(this->gfxctx);
 
 	this->double_buffered = false;
 
@@ -68,7 +68,7 @@ void Window::init()
 
 	bool set = glXMakeCurrent(this->display, this->window, this->context);
 	assert(set);
-	this->gfxenv->init();
+	this->gfxctx->init();
 }
 
 void Window::destroy()
@@ -93,7 +93,7 @@ void Window::destroy()
 
 void Window::reposition(const Vector2 & pos)
 {
-	this->pos.set(&pos);
+	this->pos.set(pos);
 
 	const Vector2 & dim = this->get_dim();
 	assert(this->display && this->window);
@@ -103,7 +103,7 @@ void Window::reposition(const Vector2 & pos)
 
 void Window::resize(const Vector2 & dim)
 {
-	this->gfxenv->resize(dim);
+	this->gfxctx->resize(dim);
 	assert(this->display && this->window);
 	XMoveResizeWindow(this->display, this->window, this->pos.x, this->pos.y,
                           dim.x, dim.y);

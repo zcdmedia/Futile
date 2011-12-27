@@ -1,5 +1,18 @@
 #include <futile/math/matrix3.h>
 
+/* access macros */
+#define m00 values[0]
+#define m01 values[3]
+#define m02 values[6]
+
+#define m10 values[1]
+#define m11 values[4]
+#define m12 values[7]
+
+#define m20 values[2]
+#define m21 values[5]
+#define m22 values[8]
+
 namespace futile {
 
 Matrix3::Matrix3()
@@ -14,15 +27,16 @@ Matrix3::~Matrix3() { }
 /* accessors */
 float Matrix3::get(int row, int col) const
 {
-	assert(row >= 0 && row < Matrix3::DIM);
-	assert(col >= 0 && col < Matrix3::DIM);
+	assert(row >= 0 && row < Matrix3::NUM_COLS);
+	assert(col >= 0 && col < Matrix3::NUM_COLS);
 
-	return this->values[(row * Matrix3::DIM) + col];
+
+	return this->values[row + (col * Matrix3::NUM_COLS)];
 }
 
 Vector3 * Matrix3::get_col(int col) const
 {
-	assert(col >= 0 && col < Matrix3::DIM);
+	assert(col >= 0 && col < Matrix3::NUM_COLS);
 
 	float x = this->get(0, col);
 	float y = this->get(1, col);
@@ -33,7 +47,7 @@ Vector3 * Matrix3::get_col(int col) const
 
 Vector3 * Matrix3::get_row(int row) const
 {
-	assert(row >= 0 && row < Matrix3::DIM);
+	assert(row >= 0 && row < Matrix3::NUM_COLS);
 
 	float x = this->get(row, 0);
 	float y = this->get(row, 1);
@@ -45,10 +59,10 @@ Vector3 * Matrix3::get_row(int row) const
 /* mutators */
 void Matrix3::set(int row, int col, float value)
 {
-	assert(row >= 0 && row < Matrix3::DIM);
-	assert(col >= 0 && col < Matrix3::DIM);
+	assert(row >= 0 && row < Matrix3::NUM_COLS);
+	assert(col >= 0 && col < Matrix3::NUM_COLS);
 
-	this->values[(row * Matrix3::DIM) + col] = value;
+	this->values[(col * Matrix3::NUM_COLS) + row] = value;
 }
 
 void Matrix3::set(const Matrix3 & m)
@@ -58,7 +72,7 @@ void Matrix3::set(const Matrix3 & m)
 
 void Matrix3::set_col(int col, const Vector3 & v)
 {
-	assert(col >= 0 && col <= Matrix3::DIM);
+	assert(col >= 0 && col <= Matrix3::NUM_COLS);
 
 	this->set(0, col, v.x);
 	this->set(1, col, v.y);
@@ -67,13 +81,14 @@ void Matrix3::set_col(int col, const Vector3 & v)
 
 void Matrix3::set_row(int row, const Vector3 & v)
 {
-	assert(row >= 0 && row <= Matrix3::DIM);
+	assert(row >= 0 && row <= Matrix3::NUM_COLS);
 
 	this->set(row, 0, v.x);
 	this->set(row, 1, v.y);
 	this->set(row, 2, v.z);
 }
 
+/* methods */
 void Matrix3::add(float scalar)
 {
 	for(int i = 0; i < Matrix3::SIZE; i++) {
@@ -90,13 +105,13 @@ void Matrix3::add(const Matrix3 & m)
 
 float Matrix3::determinant() const
 {
-	float a = this->get(0, 0) * this->get(1, 1) * this->get(2, 2);
-	float b = this->get(0, 1) * this->get(1, 2) * this->get(2, 0);
-	float c = this->get(0, 2) * this->get(1, 0) * this->get(2, 1);
+	float a = m00 * m11 * m22;
+	float b = m01 * m12 * m20;
+	float c = m02 * m10 * m21;
 
-	float d = this->get(2, 0) * this->get(1, 1) * this->get(0, 2);
-	float e = this->get(0, 1) * this->get(1, 0) * this->get(2, 2);
-	float f = this->get(0, 0) * this->get(1, 2) * this->get(2, 1);
+	float d = m20 * m11 * m02;
+	float e = m01 * m10 * m22;
+	float f = m00 * m12 * m21;
 
 	return a + b + c - d - e - f;
 }
@@ -112,27 +127,29 @@ void Matrix3::invert()
 
 	Matrix3 * t = this->clone();
 
-	float a = t->get(0, 0) * t->get(2, 2) - t->get(1, 2) * t->get(2, 1);
-	float b = t->get(1, 2) * t->get(2, 0) - t->get(1, 0) * t->get(2, 2);
-	float c = t->get(1, 0) * t->get(2, 1) - t->get(1, 1) * t->get(2, 0);
+	float a = m00 * m22 - m12 * m21;
+	float b = m12 * m20 - m10 * m22;
+	float c = m10 * m21 - m11 * m20;
 
-	float d = t->get(0, 2) * t->get(2, 1) - t->get(0, 1) * t->get(2, 2);
-	float e = t->get(0, 0) * t->get(2, 2) - t->get(0, 2) * t->get(2, 0);
-	float f = t->get(2, 0) * t->get(0, 1) - t->get(0, 0) * t->get(2, 1);
+	float d = m02 * m21 - m01 * m22;
+	float e = m00 * m22 - m02 * m20;
+	float f = m20 * m01 - m00 * m21;
 
-	float g = t->get(0, 1) * t->get(1, 2) - t->get(0, 2) * t->get(1, 1);
-	float h = t->get(0, 2) * t->get(1, 0) - t->get(0, 0) * t->get(1, 2);
-	float k = t->get(0, 0) * t->get(1, 1) - t->get(0, 1) * t->get(1, 0);
+	float g = m01 * m12 - m02 * m11;
+	float h = m02 * m10 - m00 * m12;
+	float k = m00 * m11 - m01 * m10;
 
-	this->values[0] = a;
-	this->values[1] = d;
-	this->values[2] = g;
-	this->values[3] = b;
-	this->values[4] = e;
-	this->values[5] = h;
-	this->values[6] = c;
-	this->values[7] = f;
-	this->values[8] = k;
+	delete t;
+
+	this->m00 = a;
+	this->m01 = d;
+	this->m02 = g;
+	this->m10 = b;
+	this->m11 = e;
+	this->m12 = h;
+	this->m20 = c;
+	this->m21 = f;
+	this->m22 = k;
 
 	this->mul(1.0f / determinant);
 }
@@ -140,9 +157,9 @@ void Matrix3::invert()
 void Matrix3::identity()
 {
 	this->zero();
-	this->values[0] = 1.0f;
-	this->values[3] = 1.0f;
-	this->values[6] = 1.0f;
+	this->m00 = 1.0f;
+	this->m11 = 1.0f;
+	this->m22 = 1.0f;
 }
 
 void Matrix3::mul(float scalar)
@@ -154,26 +171,27 @@ void Matrix3::mul(float scalar)
 
 void Matrix3::mul(const Matrix3 & m)
 {
+	const Vector3 * r1 = this->get_row(0);
+	const Vector3 * r2 = this->get_row(1);
+	const Vector3 * r3 = this->get_row(2);
+
 	const Vector3 * c1 = m.get_col(0);
 	const Vector3 * c2 = m.get_col(1);
 	const Vector3 * c3 = m.get_col(2);
 
-	const Vector3 * r1 = this->get_row(0);
-	this->values[0] = r1->dot(*c1);
-	this->values[1] = r1->dot(*c2);
-	this->values[2] = r1->dot(*c3);
+	this->m00 = r1->dot(*c1);
+	this->m01 = r1->dot(*c2);
+	this->m02 = r1->dot(*c3);
 	delete r1;
 
-	const Vector3 * r2 = this->get_row(1);
-	this->values[3] = r2->dot(*c1);
-	this->values[4] = r2->dot(*c2);
-	this->values[5] = r2->dot(*c3);
+	this->m10 = r2->dot(*c1);
+	this->m11 = r2->dot(*c2);
+	this->m12 = r2->dot(*c3);
 	delete r2;
 
-	const Vector3 * r3 = this->get_row(2);
-	this->values[6] = r3->dot(*c1);
-	this->values[7] = r3->dot(*c2);
-	this->values[8] = r3->dot(*c3);
+	this->m20 = r3->dot(*c1);
+	this->m21 = r3->dot(*c2);
+	this->m22 = r3->dot(*c3);
 	delete r3;
 
 	delete c1;
@@ -189,38 +207,95 @@ void Matrix3::normalize()
 	this->mul(1.0f / determinant);
 }
 
+
 void Matrix3::rot_x(float angle)
 {
+	this->identity();
+	float cosine = cos(angle);
+	float sine = sin(angle);
+
+	this->m11 = cosine;
+	this->m12 = 0 - sine;
+	this->m21 = sine;
+	this->m22 = cosine;
 }
 
 void Matrix3::rot_y(float angle)
 {
+	this->identity();
+	float cosine = cos(angle);
+	float sine = sin(angle);
+
+	this->m00 = cosine;
+	this->m02 = sine;
+	this->m20 = 0 - sine;
+	this->m22 = cosine;
 }
 
 void Matrix3::rot_z(float angle)
 {
+	this->identity();
+	float cosine = cos(angle);
+	float sine = sin(angle);
+
+	this->m00 = cosine;
+	this->m01 = 0 - sine;
+	this->m10 = sine;
+	this->m11 = cosine;
+}
+
+void Matrix3::scale(const Tuple2 & t)
+{
+	this->zero();
+	this->m00 = t.x;
+	this->m11 = t.y;
 }
 
 void Matrix3::sub(float scalar)
 {
-	for(int i = 0; i < Matrix3::DIM; i++) {
+	for(int i = 0; i < Matrix3::NUM_COLS; i++) {
 		this->values[i] -= scalar;
 	}
 }
 
 void Matrix3::sub(const Matrix3 & m)
 {
-	for(int i = 0; i < Matrix3::DIM; i++) {
+	for(int i = 0; i < Matrix3::NUM_COLS; i++) {
 		this->values[i] -= m.values[i];
 	}
 }
 
-void Matrix3::transform(const Tuple3 * t)
+void Matrix3::transform(Tuple3 * t)
 {
+	if(!(t)) return;
+
+	float x = this->m00 * t->x + this->m01 * t->y + this->m02 * t->z;
+	float y = this->m10 * t->x + this->m11 * t->y + this->m12 * t->z;
+	float z = this->m20 * t->x + this->m21 * t->y + this->m22 * t->z;
+
+	t->set(x, y, z);
+}
+
+void Matrix3::translate(const Tuple2 & t)
+{
+	this->identity();
+	this->m20 = t.x;
+	this->m21 = t.y;	
 }
 
 void Matrix3::transpose()
 {
+	const Vector3 * c1 = this->get_col(0);
+	this->set_row(0, *c1);
+	delete c1;
+
+	const Vector3 * c2 = this->get_col(1);
+	this->set_row(1, *c2);
+	delete c2;
+
+	const Vector3 * c3 = this->get_col(2);
+	this->set_row(2, *c3);
+	delete c3;
 }
 
 void Matrix3::zero()
@@ -232,24 +307,32 @@ void Matrix3::zero()
 Matrix3 * Matrix3::clone() const
 {
 	Matrix3 * copy = new Matrix3();
-	std::copy(this->values_begin, this->values_end, copy->values_begin);
+	copy->set(*this);
 
 	return copy;
 }
 
-bool Matrix3::equals(const Matrix3 * m) const
+bool Matrix3::equals(const Matrix3 & m) const
 {
-	if(!(m)) return false;
-
 	for(int i = 0; i < Matrix3::SIZE; i++) {
 		bool equal = Math<float>::epsilon_equals(this->values[i],
-                                                         m->values[i]);
-		if(!(equal)) {
-			return false;
-		}
+                                                         m.values[i]);
+		if(!(equal)) return false;
 	}
 
 	return true;
 }
 
 }
+
+#undef m00
+#undef m01
+#undef m02
+
+#undef m10
+#undef m11
+#undef m12
+
+#undef m20
+#undef m21
+#undef m22

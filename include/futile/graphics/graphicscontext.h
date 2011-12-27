@@ -1,10 +1,10 @@
 /**
-	@file		graphicsenvironment.h
+	@file		graphicscontext.h
 	@author		Matthew Hinkle
  */
 
-#ifndef FUTILE_GRAPHICS_GRAPHICSENVIRONMENT_H_
-#define FUTILE_GRAPHICS_GRAPHICSENVIRONMENT_H_
+#ifndef FUTILE_GRAPHICS_GRAPHICSCONTEXT_H_
+#define FUTILE_GRAPHICS_GRAPHICSCONTEXT_H_
 
 #include <futile/math/vector2.h>
 #include <futile/graphics/graphics.h>
@@ -12,11 +12,11 @@
 namespace futile {
 
 /**
-	graphics environment abstract class
+	graphics environment
  */
-class GraphicsEnvironment {
+class GraphicsContext {
 public:
-	virtual ~GraphicsEnvironment();
+	virtual ~GraphicsContext();
 
 	/* accessors */
 	const Vector2 & get_dim() const { return this->dim; }
@@ -27,8 +27,8 @@ public:
 	virtual void refresh() = 0;
 
 protected:
-	GraphicsEnvironment();
-	GraphicsEnvironment(const Vector2 & dim);
+	GraphicsContext();
+	GraphicsContext(const Vector2 & dim);
 
 	Vector2 dim;
 };

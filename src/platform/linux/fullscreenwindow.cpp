@@ -5,7 +5,7 @@ static inline void redirect_input(Display *, ::Window);
 
 namespace futile {
 
-FullScreenWindow::FullScreenWindow(GraphicsEnvironment * gfxenv) : Window(gfxenv) { }
+FullScreenWindow::FullScreenWindow(GraphicsContext * gfxenv) : Window(gfxenv) { }
 
 FullScreenWindow::~FullScreenWindow() { }
 
@@ -22,7 +22,7 @@ void FullScreenWindow::resize(const Vector2 & dim) { }
 
 	const float width = static_cast<float>(this->mode.hdisplay);
 	const float height = static_cast<float>(this->mode.vdisplay);
-	this->gfxenv->resize(Vector2(width, height));
+	this->gfxctx->resize(Vector2(width, height));
 
 	::Window parent = RootWindow(this->display, this->vi->screen);
 	::Window window = XCreateWindow(this->display, parent,
