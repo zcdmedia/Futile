@@ -54,7 +54,7 @@ void Vector4::normalize()
 }
 
 /* interfaces */
-Tuple4 * Vector4::clone() const
+Vector4 * Vector4::clone() const
 {
 	return new Vector4(this->x, this->y, this->z, this->w);
 }

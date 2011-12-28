@@ -29,7 +29,8 @@ public:
 	float length_squared() const;
 	void normalize();
 
-	virtual Tuple2 * clone() const;
+	/* interfaces */
+	virtual Vector2 * clone() const;
 
 private:
 	Vector2(const Vector2 &);

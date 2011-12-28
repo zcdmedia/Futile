@@ -42,8 +42,8 @@ void Tuple2::add(const Tuple2 & t)
 
 void Tuple2::clamp(float min, float max)
 {
-	this->x = Math<float>::clamp(this->x, min, max);
-	this->y = Math<float>::clamp(this->y, min, max);
+	this->x = MathHelper<float>::clamp(this->x, min, max);
+	this->y = MathHelper<float>::clamp(this->y, min, max);
 }
 
 void Tuple2::clamp_max(float max)
@@ -89,9 +89,10 @@ void Tuple2::sub(const Tuple2 & t)
 }
 
 /* interface */
-bool Tuple2::equals(const Tuple2 * t) const
+bool Tuple2::equals(const Tuple2 & t) const
 {
-	return t && this->x == t->x && this->y == t->y;
+	return MathHelper<float>::epsilon_equals(this->x, t.x)
+               && MathHelper<float>::epsilon_equals(this->y, t.y);
 }
 
 }

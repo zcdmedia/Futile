@@ -23,6 +23,14 @@ void Tuple4::set(float x, float y, float z, float w)
 	this->w = w;
 }
 
+void Tuple4::set(const Tuple4 & t)
+{
+	this->x = t.x;
+	this->y = t.y;
+	this->z = t.z;
+	this->w = t.w;
+}
+
 /* methods */
 void Tuple4::absolute()
 {
@@ -42,10 +50,10 @@ void Tuple4::add(const Tuple4 & t)
 
 void Tuple4::clamp(float min, float max)
 {
-        this->x = Math<float>::clamp(this->x, min, max);
-        this->y = Math<float>::clamp(this->y, min, max);
-	this->z = Math<float>::clamp(this->z, min, max);
-	this->w = Math<float>::clamp(this->w, min, max);
+        this->x = MathHelper<float>::clamp(this->x, min, max);
+        this->y = MathHelper<float>::clamp(this->y, min, max);
+	this->z = MathHelper<float>::clamp(this->z, min, max);
+	this->w = MathHelper<float>::clamp(this->w, min, max);
 }
 
 void Tuple4::clamp_max(float max)
@@ -100,10 +108,11 @@ void Tuple4::sub(const Tuple4 & t)
 }
 
 /* interface */
-bool Tuple4::equals(const Tuple4 * t) const
+bool Tuple4::equals(const Tuple4 & t) const
 {
-	return t && this->x == t->x && this->y == t->y && this->z == t->z
-               && this->w == t->w;
+	return MathHelper<float>::epsilon_equals(this->x, t.x)
+               && MathHelper<float>::epsilon_equals(this->y, t.y)
+               && MathHelper<float>::epsilon_equals(this->z, t.z);
 }
 
 }

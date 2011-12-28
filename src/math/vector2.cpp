@@ -53,7 +53,7 @@ void Vector2::normalize()
 }
 
 /* interfaces */
-Tuple2 * Vector2::clone() const
+Vector2 * Vector2::clone() const
 {
 	return new Vector2(this->x, this->y);
 }

@@ -3,8 +3,8 @@ set (CMAKE_CXX_FLAGS "-g")
 
 # source files list
 set (SRC
-	graphicscontext.cpp graphicscontext2d.cpp graphicscontext3d.cpp
-	graphicscontextfactory.cpp
+	graphicscontext.cpp
+	spritebatch.cpp
 	texture.cpp texture2d.cpp
 )
 

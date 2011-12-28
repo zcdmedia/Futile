@@ -96,6 +96,16 @@ void Matrix4::set(const Matrix4 & m)
 	std::copy(m.values_begin, m.values_end, this->values_begin);
 }
 
+void Matrix4::set_col(int col, const Vector3 & v)
+{
+	assert(col >= 0 && col <= Matrix4::NUM_COLS);
+
+	this->set(0, col, v.x);
+	this->set(1, col, v.y);
+	this->set(2, col, v.z);
+	this->set(3, col, 0.0f);
+}
+
 void Matrix4::set_col(int col, const Vector4 & v)
 {
 	assert(col >= 0 && col <= Matrix4::NUM_COLS);
@@ -104,6 +114,16 @@ void Matrix4::set_col(int col, const Vector4 & v)
 	this->set(1, col, v.y);
 	this->set(2, col, v.z);
 	this->set(3, col, v.w);
+}
+
+void Matrix4::set_row(int row, const Vector3 & v)
+{
+	assert(row >= 0 && row <= Matrix4::NUM_COLS);
+
+	this->set(row, 0, v.x);
+	this->set(row, 1, v.y);
+	this->set(row, 2, v.z);
+	this->set(row, 3, 0.0f);
 }
 
 void Matrix4::set_row(int row, const Vector4 & v)
@@ -266,9 +286,9 @@ void Matrix4::mul(float scalar)
 void Matrix4::mul(const Matrix4 & m)
 {
 	const Vector4 * r1 = this->get_row(0);
-	const Vector4 * r2 = this->get_row(0);
-	const Vector4 * r3 = this->get_row(0);
-	const Vector4 * r4 = this->get_row(0);
+	const Vector4 * r2 = this->get_row(1);
+	const Vector4 * r3 = this->get_row(2);
+	const Vector4 * r4 = this->get_row(3);
 
 	const Vector4 * c1 = m.get_col(0);
 	const Vector4 * c2 = m.get_col(1);
@@ -316,8 +336,8 @@ void Matrix4::normalize()
 void Matrix4::rot_x(float angle)
 {
 	this->identity();
-	float cosine = cos(angle);
-	float sine = sin(angle);
+	float cosine = std::cos(angle);
+	float sine = std::sin(angle);
 
 	this->m11 = cosine;
 	this->m12 = 0 - sine;
@@ -328,8 +348,8 @@ void Matrix4::rot_x(float angle)
 void Matrix4::rot_y(float angle)
 {
 	this->identity();
-	float cosine = cos(angle);
-	float sine = sin(angle);
+	float cosine = std::cos(angle);
+	float sine = std::sin(angle);
 
 	this->m00 = cosine;
 	this->m02 = sine;
@@ -340,8 +360,8 @@ void Matrix4::rot_y(float angle)
 void Matrix4::rot_z(float angle)
 {
 	this->identity();
-	float cosine = cos(angle);
-	float sine = sin(angle);
+	float cosine = std::cos(angle);
+	float sine = std::sin(angle);
 
 	this->m00 = cosine;
 	this->m01 = 0 - sine;
@@ -393,9 +413,9 @@ void Matrix4::transform(Tuple4 * t)
 void Matrix4::translate(const Tuple3 & t)
 {
 	this->identity();
-	this->m30 = t.x;
-	this->m31 = t.y;
-	this->m32 = t.z;
+	this->m03 = t.x;
+	this->m13 = t.y;
+	this->m23 = t.z;
 }
 
 void Matrix4::transpose()
@@ -434,8 +454,8 @@ Matrix4 * Matrix4::clone() const
 bool Matrix4::equals(const Matrix4 & m) const
 {
 	for(int i = 0; i < Matrix4::SIZE; i++) {
-		bool equal = Math<float>::epsilon_equals(this->values[i],
-                                                         m.values[i]);
+		bool equal = MathHelper<float>::epsilon_equals(this->values[i],
+                                                               m.values[i]);
 		if(!(equal)) return false;
 	}
 

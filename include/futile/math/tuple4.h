@@ -10,14 +10,14 @@
 
 #include <futile/cloneable.h>
 #include <futile/equatable.h>
-#include <futile/math/math.h>
+#include <futile/math/mathhelper.h>
 
 namespace futile {
 
 /**
 	4-element tuple abstract class
  */
-class Tuple4 : public Cloneable<Tuple4 *>, public Equatable<const Tuple4 *> {
+class Tuple4 : public Cloneable<Tuple4 *>, public Equatable<const Tuple4 &> {
 public:
 	Tuple4();
 	Tuple4(float x, float y, float z, float w);
@@ -25,6 +25,7 @@ public:
 
 	/* mutators */
 	void set(float x, float y, float z, float w);
+	void set(const Tuple4 & t);
 
 	/* methods */
 	void absolute();
@@ -39,7 +40,7 @@ public:
 
 	/* interfaces */
 	virtual Tuple4 * clone() const = 0;
-	virtual bool equals(const Tuple4 * t) const;
+	virtual bool equals(const Tuple4 & t) const;
 
 	float x;
 	float y;

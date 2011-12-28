@@ -5,6 +5,10 @@ set (CMAKE_CXX_FLAGS "-g")
 set (MATH_SRC
 	tuple2.cpp tuple3.cpp tuple4.cpp
 	matrix3.cpp matrix4.cpp
+	point2.cpp point3.cpp point4.cpp
+	quad.cpp
+	rectangle.cpp
+	transform.cpp
 	vector2.cpp vector3.cpp vector4.cpp
 )
 

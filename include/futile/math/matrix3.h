@@ -11,7 +11,7 @@
 
 #include <futile/cloneable.h>
 #include <futile/equatable.h>
-#include <futile/math/math.h>
+#include <futile/math/mathhelper.h>
 #include <futile/math/tuple2.h>
 #include <futile/math/tuple3.h>
 #include <futile/math/vector3.h>

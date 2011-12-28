@@ -31,7 +31,7 @@ public:
 	void normalize();
 
 	/* interfaces */
-	virtual Tuple3 * clone() const;
+	virtual Vector3 * clone() const;
 
 private:
 	Vector3(const Vector3 &);

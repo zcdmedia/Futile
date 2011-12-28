@@ -11,9 +11,10 @@
 
 #include <futile/cloneable.h>
 #include <futile/equatable.h>
-#include <futile/math/math.h>
+#include <futile/math/mathhelper.h>
 #include <futile/math/tuple3.h>
 #include <futile/math/tuple4.h>
+#include <futile/math/vector3.h>
 #include <futile/math/vector4.h>
 
 namespace futile {
@@ -39,7 +40,9 @@ public:
 	/* mutators */
 	void set(int row, int col, float value);
 	void set(const Matrix4 & m);
+	void set_col(int col, const Vector3 & v);
 	void set_col(int col, const Vector4 & v);
+	void set_row(int row, const Vector3 & v);
 	void set_row(int row, const Vector4 & v);
 
 	/* methods */

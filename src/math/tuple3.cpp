@@ -22,6 +22,13 @@ void Tuple3::set(float x, float y, float z)
 	this->z = z;
 }
 
+void Tuple3::set(const Tuple3 & t)
+{
+	this->x = t.x;
+	this->y = t.y;
+	this->z = t.z;
+}
+
 /* methods */
 void Tuple3::absolute()
 {
@@ -39,9 +46,9 @@ void Tuple3::add(const Tuple3 & t)
 
 void Tuple3::clamp(float min, float max)
 {
-        this->x = Math<float>::clamp(this->x, min, max);
-        this->y = Math<float>::clamp(this->y, min, max);
-	this->z = Math<float>::clamp(this->z, min, max);
+        this->x = MathHelper<float>::clamp(this->x, min, max);
+        this->y = MathHelper<float>::clamp(this->y, min, max);
+	this->z = MathHelper<float>::clamp(this->z, min, max);
 }
 
 void Tuple3::clamp_max(float max)
@@ -90,9 +97,11 @@ void Tuple3::sub(const Tuple3 & t)
 	this->z -= t.z;
 }
 
-bool Tuple3::equals(const Tuple3 * t) const
+bool Tuple3::equals(const Tuple3 & t) const
 {
-	return t && this->x == t->x && this->y == t->y && this->z == t->z;
+	return MathHelper<float>::epsilon_equals(this->x, t.x)
+               && MathHelper<float>::epsilon_equals(this->y, t.y)
+               && MathHelper<float>::epsilon_equals(this->z, t.z);
 }
 
 }

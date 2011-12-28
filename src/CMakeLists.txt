@@ -3,7 +3,7 @@ set (CMAKE_CXX_FLAGS "-g -lpng")
 
 # source files list
 if (Futile_LINUX)
-	set (SRC linux_main.cpp rawbuffer.cpp)
+	set (SRC linux_main.cpp color.cpp rawbuffer.cpp)
 elseif (Futile_WIN32)
 	set (SRC win32_main.cpp)
 endif ()

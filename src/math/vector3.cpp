@@ -20,6 +20,13 @@ float Vector3::angle(const Vector3 & v) const
 	return std::acos(a.dot(b));
 }
 
+void Vector3::cross(const Vector3 & v1, const Vector3 & v2)
+{
+	this->x = v1.y * v2.z - v1.z * v2.y;
+	this->y = v1.z * v2.x - v1.x * v2.z;
+	this->z = v1.x * v2.y - v1.y * v2.x;
+}
+
 float Vector3::distance(const Vector3 & v) const
 {
 	Vector3 u(v.x, v.y, v.z);
@@ -53,7 +60,7 @@ void Vector3::normalize()
 }
 
 /* interfaces */
-Tuple3 * Vector3::clone() const
+Vector3 * Vector3::clone() const
 {
 	return new Vector3(this->x, this->y, this->z);
 }

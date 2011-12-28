@@ -23,14 +23,13 @@ public:
 
 	/* methods */
 	float angle(const Vector4 & v) const;
-	void cross(const Vector4 & v1, const Vector4 & v2);
 	float distance(const Vector4 & v) const;
 	float dot(const Vector4 & v) const;
 	float length() const;
 	float length_squared() const;
 	void normalize();
 
-	virtual Tuple4 * clone() const;
+	virtual Vector4 * clone() const;
 
 private:
 	Vector4(const Vector4 &);

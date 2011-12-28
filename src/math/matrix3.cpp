@@ -315,8 +315,8 @@ Matrix3 * Matrix3::clone() const
 bool Matrix3::equals(const Matrix3 & m) const
 {
 	for(int i = 0; i < Matrix3::SIZE; i++) {
-		bool equal = Math<float>::epsilon_equals(this->values[i],
-                                                         m.values[i]);
+		bool equal = MathHelper<float>::epsilon_equals(this->values[i],
+                                                               m.values[i]);
 		if(!(equal)) return false;
 	}
 
