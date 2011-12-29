@@ -19,6 +19,7 @@ namespace futile {
  */
 class Texture2D : public Texture {
 public:
+	Texture2D();
 	explicit Texture2D(const std::string & name);
 	~Texture2D();
 

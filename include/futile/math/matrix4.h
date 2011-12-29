@@ -11,6 +11,7 @@
 
 #include <futile/cloneable.h>
 #include <futile/equatable.h>
+#include <futile/settable.h>
 #include <futile/math/mathhelper.h>
 #include <futile/math/tuple3.h>
 #include <futile/math/tuple4.h>
@@ -22,7 +23,7 @@ namespace futile {
 /**
 	4x4 column-major matrix
  */
-class Matrix4 : public Cloneable<Matrix4 *>, public Equatable<const Matrix4 &> {
+class Matrix4 : public Cloneable<Matrix4 *>, public Equatable<const Matrix4 &>, public Settable<const Matrix4 &> {
 public:
 	Matrix4();
 	~Matrix4();
@@ -39,7 +40,6 @@ public:
 
 	/* mutators */
 	void set(int row, int col, float value);
-	void set(const Matrix4 & m);
 	void set_col(int col, const Vector3 & v);
 	void set_col(int col, const Vector4 & v);
 	void set_row(int row, const Vector3 & v);
@@ -70,6 +70,7 @@ public:
 	/* interfaces */
 	virtual Matrix4 * clone() const;
 	virtual bool equals(const Matrix4 & m) const;
+	virtual void set(const Matrix4 & m);
 
 	static const int NUM_COLS = 4;
 	static const int SIZE = Matrix4::NUM_COLS * Matrix4::NUM_COLS;

@@ -8,6 +8,8 @@ static const GLint BORDER = 0;
 
 namespace futile {
 
+Texture2D::Texture2D() : Texture("\0") { }
+
 Texture2D::Texture2D(const std::string & name) : Texture(name) { }
 
 Texture2D::~Texture2D() { }

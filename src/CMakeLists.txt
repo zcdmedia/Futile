@@ -2,11 +2,13 @@
 set (CMAKE_CXX_FLAGS "-g -lpng")
 
 # source files list
-if (Futile_LINUX)
-	set (SRC linux_main.cpp color.cpp rawbuffer.cpp)
-elseif (Futile_WIN32)
-	set (SRC win32_main.cpp)
-endif ()
+set (SRC
+	main.cpp
+	color.cpp
+	game.cpp futile.cpp
+	gametime.cpp
+	rawbuffer.cpp
+)
 
 # locate common libraries
 find_package (OpenGL)
@@ -20,6 +22,7 @@ find_library (Xxf86vm_LIBRARY Xxf86vm ${X11_LIB_SEARCH_PATH})
 add_subdirectory (graphics)
 add_subdirectory (math)
 add_subdirectory (platform)
+add_subdirectory (system)
 
 # external library lis
 set (LIB
@@ -29,6 +32,7 @@ set (LIB
 	graphics
 	math
 	platform
+	system
 )
 
 # set the include path

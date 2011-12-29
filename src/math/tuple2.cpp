@@ -21,12 +21,6 @@ void Tuple2::set(float x, float y)
 	this->y = y;
 }
 
-void Tuple2::set(const Tuple2 & t)
-{
-	this->x = t.x;
-	this->y = t.y;
-}
-
 /* methods */
 void Tuple2::absolute()
 {
@@ -93,6 +87,12 @@ bool Tuple2::equals(const Tuple2 & t) const
 {
 	return MathHelper<float>::epsilon_equals(this->x, t.x)
                && MathHelper<float>::epsilon_equals(this->y, t.y);
+}
+
+void Tuple2::set(const Tuple2 & t)
+{
+	this->x = t.x;
+	this->y = t.y;
 }
 
 }

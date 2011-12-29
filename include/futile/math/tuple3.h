@@ -10,6 +10,7 @@
 
 #include <futile/cloneable.h>
 #include <futile/equatable.h>
+#include <futile/settable.h>
 #include <futile/math/mathhelper.h>
 
 namespace futile {
@@ -17,7 +18,7 @@ namespace futile {
 /**
 	3-element tuple abstract class
  */
-class Tuple3 : public Cloneable<Tuple3 *>, public Equatable<const Tuple3 &> {
+class Tuple3 : public Cloneable<Tuple3 *>, public Equatable<const Tuple3 &>, public Settable<const Tuple3 &> {
 public:
 	Tuple3();
 	Tuple3(float x, float y, float z);
@@ -25,7 +26,6 @@ public:
 
 	/* mutators */
 	void set(float x, float y, float z);
-	void set(const Tuple3 & t);
 
 	/* methods */
 	void absolute();
@@ -41,6 +41,7 @@ public:
 	/* interfaces */
 	virtual Tuple3 * clone() const = 0;
 	virtual bool equals(const Tuple3 & t) const;
+	virtual void set(const Tuple3 & t);
 
 	float x;
 	float y;

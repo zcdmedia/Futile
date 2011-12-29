@@ -22,13 +22,6 @@ void Tuple3::set(float x, float y, float z)
 	this->z = z;
 }
 
-void Tuple3::set(const Tuple3 & t)
-{
-	this->x = t.x;
-	this->y = t.y;
-	this->z = t.z;
-}
-
 /* methods */
 void Tuple3::absolute()
 {
@@ -97,11 +90,19 @@ void Tuple3::sub(const Tuple3 & t)
 	this->z -= t.z;
 }
 
+/* interfaces */
 bool Tuple3::equals(const Tuple3 & t) const
 {
 	return MathHelper<float>::epsilon_equals(this->x, t.x)
                && MathHelper<float>::epsilon_equals(this->y, t.y)
                && MathHelper<float>::epsilon_equals(this->z, t.z);
+}
+
+void Tuple3::set(const Tuple3 & t)
+{
+	this->x = t.x;
+	this->y = t.y;
+	this->z = t.z;
 }
 
 }

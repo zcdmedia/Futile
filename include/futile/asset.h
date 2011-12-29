@@ -20,6 +20,7 @@ class RawBuffer;
  */
 class Asset : Serializable<Asset *> {
 public:
+	Asset(const std::string & name) : name(name) { }
 	virtual ~Asset() { }
 
 	/* accessors */
@@ -31,9 +32,6 @@ public:
 	/* interfaces */
 	virtual RawBuffer * serialize() const = 0;
 	virtual Asset * deserialize(const RawBuffer & data) = 0;
-
-protected:
-	Asset(const std::string & name) : name(name) { }
 
 private:
 	std::string name;

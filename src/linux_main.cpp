@@ -22,28 +22,6 @@ static inline void render(futile::Windowable *, const Texture2D & texture, Sprit
 
 int main()
 {
-	GraphicsContext * gfxenv = new GraphicsContext(futile::Vector2(800, 600));
-	Windowable * window = futile::WindowFactory::create_window(gfxenv);
-	window->init();
-
-	struct pngio_t p;
-	pngio_init(&p);
-	int i = pngio_read(&p, "omg.png");
-
-	char * data = NULL;
-	pngio_image_data(&p, (png_byte **) &data);
-
-	int size = pngio_size(&p);
-
-	stringstream ss(std::ios_base::binary | std::ios_base::in | std::ios_base::out);
-	ss.write(data, size);
-
-	Texture2D texture("first");
-	texture.image_data.read(ss);
-	texture.dim.x = p.width;
-	texture.dim.y = p.height;
-	texture.init();
-
 	SpriteBatch sb;
 	GLfloat rotation_quad = 0.0f;
 	while(rotation_quad < 500.0f) {

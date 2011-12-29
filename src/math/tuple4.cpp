@@ -23,14 +23,6 @@ void Tuple4::set(float x, float y, float z, float w)
 	this->w = w;
 }
 
-void Tuple4::set(const Tuple4 & t)
-{
-	this->x = t.x;
-	this->y = t.y;
-	this->z = t.z;
-	this->w = t.w;
-}
-
 /* methods */
 void Tuple4::absolute()
 {
@@ -113,6 +105,14 @@ bool Tuple4::equals(const Tuple4 & t) const
 	return MathHelper<float>::epsilon_equals(this->x, t.x)
                && MathHelper<float>::epsilon_equals(this->y, t.y)
                && MathHelper<float>::epsilon_equals(this->z, t.z);
+}
+
+void Tuple4::set(const Tuple4 & t)
+{
+	this->x = t.x;
+	this->y = t.y;
+	this->z = t.z;
+	this->w = t.w;
 }
 
 }
