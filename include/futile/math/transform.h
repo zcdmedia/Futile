@@ -18,11 +18,12 @@ namespace futile {
 class Transform {
 public:
 	/* methods */
-	static inline void load_matrix(Matrix4 * m)
+	static inline void load_matrix(const Matrix4 & m)
 	{
-		if(!(m)) return;
+		Matrix4 copy;
+		copy.set(m);
 
-		glLoadMatrixf(m->get_values());
+		glLoadMatrixf(copy.get_values());
 	}
 
 	static void look_at(const Vector3 & eye, const Vector3 & center,
@@ -33,7 +34,6 @@ public:
 
 	static void frustum(float left, float right, float bottom, float top,
                             float znear, float zfar, Matrix4 * m);
-	
 
 private:
 	Transform();

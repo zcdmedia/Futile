@@ -5,13 +5,12 @@ static inline void redirect_input(Display *, ::Window);
 
 namespace futile {
 
-FullScreenWindow::FullScreenWindow(GraphicsContext * gfxenv) : Window(gfxenv) { }
+FullScreenWindow::FullScreenWindow() : Window() { }
 
 FullScreenWindow::~FullScreenWindow() { }
 
 /* methods */
-void FullScreenWindow::reposition(const Vector2 & pos) { }
-void FullScreenWindow::resize(const Vector2 & dim) { }
+void FullScreenWindow::move(const Rectangle & bounds) { }
 
 ::Window FullScreenWindow::create_window()
 {
@@ -20,9 +19,8 @@ void FullScreenWindow::resize(const Vector2 & dim) { }
 	XF86VidModeSetViewPort(this->display, this->screen, 0, 0);
 	this->attr.override_redirect = True;
 
-	const float width = static_cast<float>(this->mode.hdisplay);
-	const float height = static_cast<float>(this->mode.vdisplay);
-	this->gfxctx->resize(Vector2(width, height));
+	int width = this->mode.hdisplay;
+	int height = this->mode.vdisplay;
 
 	::Window parent = RootWindow(this->display, this->vi->screen);
 	::Window window = XCreateWindow(this->display, parent,

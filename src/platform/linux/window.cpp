@@ -20,7 +20,7 @@ static int dbl_buf_attr[] = {
 };
 
 /* internal prototypes */
-static XF86VidModeModeInfo get_mode(const futile::Vector2 &, Display *, int);
+static XF86VidModeModeInfo get_mode(const futile::Rectangle &, Display *, int);
 static XF86VidModeModeInfo get_default_mode(Display *, int);
 
 static XVisualInfo * get_visual_info(Display *, int, bool *);
@@ -29,11 +29,8 @@ static inline void revert_mode(Display *, int);
 
 namespace futile {
 
-Window::Window(GraphicsContext * gfxctx) : pos(0, 0)
+Window::Window()
 {
-	this->gfxctx = gfxctx;
-	assert(this->gfxctx);
-
 	this->double_buffered = false;
 
 	this->context = NULL;
@@ -48,9 +45,9 @@ Window::~Window()
 
 void Window::init()
 {
-	this->display = XOpenDisplay(0);
+	this->display = XOpenDisplay(NULL);
 	this->screen = DefaultScreen(this->display);
-	this->mode = get_mode(this->get_dim(), this->display, this->screen);
+	this->mode = get_default_mode(this->display, this->screen);
 	this->vi = get_visual_info(this->display, this->screen,
                                    &this->double_buffered);
 	assert(this->vi);
@@ -68,7 +65,6 @@ void Window::init()
 
 	bool set = glXMakeCurrent(this->display, this->window, this->context);
 	assert(set);
-	this->gfxctx->init();
 }
 
 void Window::destroy()
@@ -91,22 +87,10 @@ void Window::destroy()
 	this->display = NULL;
 }
 
-void Window::reposition(const Vector2 & pos)
+void Window::move(const Rectangle & bounds)
 {
-	this->pos.set(pos);
-
-	const Vector2 & dim = this->get_dim();
-	assert(this->display && this->window);
-	XMoveResizeWindow(this->display, this->window, this->pos.x, this->pos.y,
-                          dim.x, dim.y);
-}
-
-void Window::resize(const Vector2 & dim)
-{
-	this->gfxctx->resize(dim);
-	assert(this->display && this->window);
-	XMoveResizeWindow(this->display, this->window, this->pos.x, this->pos.y,
-                          dim.x, dim.y);
+	XMoveResizeWindow(this->display, this->window, bounds.x, bounds.y,
+                          bounds.width, bounds.height);
 }
 
 void Window::refresh()
@@ -118,20 +102,17 @@ void Window::refresh()
 }
 
 /* internal */
-static XF86VidModeModeInfo get_mode(const futile::Vector2 & dim,
+static XF86VidModeModeInfo get_mode(const futile::Rectangle & bounds,
                                     Display * display, int screen)
 {
 	int num_modes = 0;
 	XF86VidModeModeInfo ** modes = NULL;
 	XF86VidModeGetAllModeLines(display, screen, &num_modes, &modes);
 
-	const int width = dim.x;
-	const int height = dim.y;
-
 	XF86VidModeModeInfo optimal = get_default_mode(display, screen);
 	for(int i = 0; i < num_modes; i++) {
 		XF86VidModeModeInfo * mode = modes[i];
-		if(mode->hdisplay == width && mode->vdisplay == height) {
+		if(mode->hdisplay == bounds.width && mode->vdisplay == bounds.height) {
 			optimal = *mode;
 			XFree(modes);
 			return optimal;

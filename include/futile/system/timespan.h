@@ -42,19 +42,13 @@ public:
 	virtual bool equals(const TimeSpan & t) const;
 	virtual void set(const TimeSpan & t);
 
-	static const int HOURS_PER_DAY = 24;
-
-	static const int MILLISECONDS_PER_SECOND = 1000;
-
-	static const int MINUTES_PER_HOUR = 60;
-	static const int MINUTES_PER_DAY = TimeSpan::HOURS_PER_DAY
-                                         * TimeSpan::MINUTES_PER_HOUR;
-
-	static const int SECONDS_PER_MINUTE = 60;
-	static const int SECONDS_PER_HOUR = TimeSpan::MINUTES_PER_HOUR
-                                          * TimeSpan::SECONDS_PER_MINUTE;
-	static const int SECONDS_PER_DAY = TimeSpan::HOURS_PER_DAY
-                                         * TimeSpan::SECONDS_PER_HOUR;
+	static const int HOURS_PER_DAY;
+	static const int MILLISECONDS_PER_SECOND;
+	static const int MINUTES_PER_HOUR;
+	static const int MINUTES_PER_DAY;
+	static const int SECONDS_PER_MINUTE;
+	static const int SECONDS_PER_HOUR;
+	static const int SECONDS_PER_DAY;
 
 private:
 	clock_t epoch;

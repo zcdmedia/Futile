@@ -7,7 +7,7 @@
 #define FUTILE_PLATFORM_WINDOWABLE_H_
 
 #include <futile/graphics/graphics.h>
-#include <futile/math/vector2.h>
+#include <futile/math/rectangle.h>
 
 namespace futile {
 
@@ -16,21 +16,14 @@ namespace futile {
  */
 class Windowable {
 public:
+	Windowable() { }
 	virtual ~Windowable() { }
-
-	/* access */
-	virtual const Vector2 & get_dim() const = 0;
-	virtual const Vector2 & get_pos() const = 0;
 
 	/* methods */
 	virtual void init() = 0;
 	virtual void destroy() = 0;
-	virtual void reposition(const Vector2 & pos) = 0;
-	virtual void resize(const Vector2 & dim) = 0;
+	virtual void move(const Rectangle & bounds) = 0;
 	virtual void refresh() = 0;
-
-protected:
-	Windowable() { }
 
 private:
 	Windowable(const Windowable &);

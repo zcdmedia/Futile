@@ -2,6 +2,21 @@
 
 namespace futile {
 
+/* constant members */
+const int TimeSpan::HOURS_PER_DAY = 24;
+
+const int TimeSpan::MILLISECONDS_PER_SECOND = 1000;
+
+const int TimeSpan::MINUTES_PER_HOUR = 60;
+const int TimeSpan::MINUTES_PER_DAY = TimeSpan::HOURS_PER_DAY
+                                    * TimeSpan::MINUTES_PER_HOUR;
+
+const int TimeSpan::SECONDS_PER_MINUTE = 60;
+const int TimeSpan::SECONDS_PER_HOUR = TimeSpan::MINUTES_PER_HOUR
+                                     * TimeSpan::SECONDS_PER_MINUTE;
+const int TimeSpan::SECONDS_PER_DAY = TimeSpan::HOURS_PER_DAY
+				    * TimeSpan::SECONDS_PER_HOUR;
+
 TimeSpan::TimeSpan()
 {
 	this->epoch = clock();

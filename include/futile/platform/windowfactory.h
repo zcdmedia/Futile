@@ -3,12 +3,11 @@
 	@author		Matthew Hinkle
  */
 
-#ifndef FUTILE_WINDOWFACTORY_H_
-#define FUTILE_WINDOWFACTORY_H_
+#ifndef FUTILE_PLATFORM_WINDOWFACTORY_H_
+#define FUTILE_PLATFORM_WINDOWFACTORY_H_
 
 #include <futile/config.h>
-#include <futile/graphics/graphicscontext.h>
-#include <futile/math/vector2.h>
+#include <futile/math/rectangle.h>
 
 namespace futile {
 
@@ -22,8 +21,8 @@ class WindowFactory {
 public:
 	~WindowFactory();
 
-	static Windowable * create_window(GraphicsContext * gfxenv);
-	static Windowable * create_fullscreen_window(GraphicsContext * gfxenv);
+	static Windowable * create_window(const Rectangle & bounds);
+	static Windowable * create_fullscreen_window();
 
 private:
 	WindowFactory();

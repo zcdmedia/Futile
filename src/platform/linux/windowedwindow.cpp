@@ -2,27 +2,28 @@
 
 namespace futile {
 
-WindowedWindow::WindowedWindow(GraphicsContext * gfxctx) : Window(gfxctx) { }
-
-WindowedWindow::WindowedWindow(GraphicsContext * gfxctx, const Vector2 & pos)
-	: Window(gfxctx)
+WindowedWindow::WindowedWindow(const Rectangle & bounds) : Window()
 {
-	this->pos.set(pos);
+	this->bounds.set(bounds);
+}
+
+WindowedWindow::~WindowedWindow() { }
+
+void WindowedWindow::move(const Rectangle & bounds)
+{
+	this->bounds.set(bounds);
+	Window::move(this->bounds);
 }
 
 ::Window WindowedWindow::create_window()
 {
         assert(this->display);
-	const int x = static_cast<int>(this->pos.x);
-	const int y = static_cast<int>(this->pos.y);
-
-	const Vector2 & dim = this->get_dim();
-	const int width = static_cast<int>(dim.x);
-	const int height = static_cast<int>(dim.y);
 
         ::Window parent = RootWindow(this->display, this->vi->screen);
         ::Window window = XCreateWindow(this->display, parent,
-                                        x, y, width, height, 0,
+                                        this->bounds.x, this->bounds.y,
+                                        this->bounds.width, this->bounds.height,
+                                        0,
                                         this->vi->depth, InputOutput,
                                         this->vi->visual, Window::VALUE_MASK,
                                         &this->attr);

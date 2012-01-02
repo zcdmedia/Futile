@@ -12,8 +12,7 @@
 
 #include <cassert>
 
-#include <futile/graphics/graphicscontext.h>
-#include <futile/math/vector2.h>
+#include <futile/math/rectangle.h>
 #include <futile/platform/windowable.h>
 
 namespace futile {
@@ -23,32 +22,23 @@ namespace futile {
  */
 class Window : public Windowable {
 public:
-	explicit Window(GraphicsContext * gfxctx);
+	Window();
 	virtual ~Window();
-
-	/* accessors */
-	const Vector2 & get_dim() const
-	{
-		assert(this->gfxctx);
-		return this->gfxctx->get_dim();
-	}
-	const Vector2 & get_pos() const { return this->pos; }
 
 	/* methods */
 	virtual void init();
 	virtual void destroy();
-	virtual void reposition(const Vector2 & pos);
-	virtual void resize(const Vector2 & dim);
+	virtual void move(const Rectangle & bounds);
 	virtual void refresh();
 
 	static const unsigned long int EVENT_MASK = ExposureMask
-                                                    | KeyPressMask
-                                                    | ButtonPressMask
-                                                    | StructureNotifyMask;
+                                                  | KeyPressMask
+                                                  | ButtonPressMask
+                                                  | StructureNotifyMask;
 	static const unsigned long int VALUE_MASK = CWBorderPixel
-                                                    | CWColormap
-                                                    | CWEventMask
-                                                    | CWOverrideRedirect;
+                                                  | CWColormap
+                                                  | CWEventMask
+                                                  | CWOverrideRedirect;
 
 protected:
 	virtual ::Window create_window() = 0;
@@ -59,17 +49,13 @@ protected:
 	XSetWindowAttributes attr;
 	XF86VidModeModeInfo mode;
 
-	GraphicsContext * gfxctx;
-
 	int screen;
 
-	Vector2 pos;
 private:
 	GLXContext context;
 
 	bool double_buffered;
 
-	Window();
 	Window(const Window &);
 	Window & operator=(const Window &);
 };

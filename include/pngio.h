@@ -1,4 +1,8 @@
 /**
+	note:  this is a temporary module used for development and testing
+ */
+
+/**
 	@file		pngio.h
 	@author		Matthew Hinkle
 	@brief		libpng wrapper

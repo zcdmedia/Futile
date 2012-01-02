@@ -17,17 +17,16 @@ namespace futile {
  */
 class FullScreenWindow : public Window {
 public:
-	explicit FullScreenWindow(GraphicsContext * gfxctx);
+	FullScreenWindow();
 	virtual ~FullScreenWindow();
 
-	virtual void reposition(const Vector2 &);
-	virtual void resize(const Vector2 &);
+	/* methods */
+	virtual void move(const Rectangle & bounds);
 
 protected:
 	virtual ::Window create_window();
 
 private:
-	FullScreenWindow();
 	FullScreenWindow(const FullScreenWindow &);
 	FullScreenWindow & operator=(const FullScreenWindow &);
 };

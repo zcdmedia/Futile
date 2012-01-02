@@ -19,6 +19,7 @@ endif ()
 
 # locate other libraries
 find_library (Xxf86vm_LIBRARY Xxf86vm ${X11_LIB_SEARCH_PATH})
+add_subdirectory (camera)
 add_subdirectory (graphics)
 add_subdirectory (math)
 add_subdirectory (platform)
@@ -29,6 +30,7 @@ set (LIB
 	${OPENGL_LIBRARY}
 	${X11_LIBRARY}
 	${Xxf86vm_LIBRARY}
+	camera
 	graphics
 	math
 	platform

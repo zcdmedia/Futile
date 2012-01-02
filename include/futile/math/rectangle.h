@@ -14,7 +14,7 @@ namespace futile {
 /**
 	rectangular quadrilateral
  */
-class Rectangle : public Equatable<const Rectangle &> {
+class Rectangle : public Equatable<const Rectangle &>, public Settable<const Rectangle &> {
 public:
 	Rectangle();
 	Rectangle(int x, int y, int width, int height);
@@ -23,7 +23,7 @@ public:
 	/* methods */
 	inline Point2 * center() const
 	{
-		return new Point2(this->width / 2.0f, this->height / 2.0f);
+		return new Point2(this->width >> 1, this->height >> 1);
 	}
 
 	inline bool empty() const
@@ -38,6 +38,7 @@ public:
 
 	/* interfaces */
 	virtual bool equals(const Rectangle & r) const;
+	virtual void set(const Rectangle & r);
 
 	int x;
 	int y;

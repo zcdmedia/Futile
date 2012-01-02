@@ -27,4 +27,12 @@ bool Rectangle::equals(const Rectangle & r) const
                && this->width == r.width && this->height == r.height;
 }
 
+void Rectangle::set(const Rectangle & r)
+{
+	this->x = r.x;
+	this->y = r.y;
+	this->width = r.width;
+	this->height = r.height;
+}
+
 }

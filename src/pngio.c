@@ -1,3 +1,7 @@
+/**
+	note:  this is a temporary module used for development and testing
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <error.h>

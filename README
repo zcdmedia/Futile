@@ -1,11 +1,11 @@
 	Futile release 0.x
 
-These are the release notes for Futile version 0.0.  This file's name suggests
+These are the release notes for Futile version 0.1.  This file's name suggests
 you do one thing, and one thing only, so do it.
 
 ABOUT
 
-	Futile is a cross-platform tile game engine distributed under the GNU
+	Futile is a cross-platform game framework distributed under the GNU
 	General Public License.
 
 	Futile uses OpenGL for all graphics rendering.

@@ -1,5 +1,8 @@
 #include <futile/game.h>
 
+#include <iostream>
+using namespace std;
+
 namespace futile {
 
 Game::Game()
@@ -55,9 +58,10 @@ void Game::draw(const GameTime & gt)
 
 void Game::init()
 {
-	this->graphics_context.resize(Vector2(800.0f, 600.0f));
-	this->window = WindowFactory::create_window(&this->graphics_context);
+	this->window = WindowFactory::create_fullscreen_window();
 	this->window->init();
+
+	this->graphics_device.get_viewport()->set_bounds(Rectangle(0, 0, 1366, 768));
 	this->game_time.reset();
 	this->running = true;
 }

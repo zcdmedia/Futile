@@ -41,6 +41,15 @@ public:
 		return rad * 180.0f / Math::PI;
 	}
 
+	static inline float wrap_angle(float rad)
+	{
+		float pi2 = 2 * Math::PI;
+		while(rad > pi2) rad -= pi2;
+		while(rad < - pi2) rad += pi2;
+
+		return rad;
+	}
+
 private:
 	Math();
 	Math(const Math &);

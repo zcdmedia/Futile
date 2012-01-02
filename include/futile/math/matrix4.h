@@ -28,10 +28,6 @@ public:
 	Matrix4();
 	~Matrix4();
 
-	/* operator overloads */
-	float operator()(int row, int col) const;
-	float & operator()(int row, int col);
-
 	/* accessors */
 	float get(int row, int col) const;
 	Vector4 * get_col(int col) const;

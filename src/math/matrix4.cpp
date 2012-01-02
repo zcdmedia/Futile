@@ -32,23 +32,6 @@ Matrix4::Matrix4()
 
 Matrix4::~Matrix4() { }
 
-/* operators */
-float Matrix4::operator()(int row, int col) const
-{
-	assert(row >= 0 && row < Matrix4::NUM_COLS);
-	assert(col >= 0 && col < Matrix4::NUM_COLS);
-
-	return this->values[row + (col * Matrix4::NUM_COLS)];
-}
-
-float & Matrix4::operator()(int row, int col)
-{
-	assert(row >= 0 && row < Matrix4::NUM_COLS);
-	assert(col >= 0 && col < Matrix4::NUM_COLS);
-
-	return this->values[row + (col * Matrix4::NUM_COLS)];
-}
-
 /* accessors */
 float Matrix4::get(int row, int col) const
 {
@@ -89,11 +72,6 @@ void Matrix4::set(int row, int col, float value)
 	assert(col >= 0 && col < Matrix4::NUM_COLS);
 
 	this->values[(row * Matrix4::NUM_COLS) + col] = value;
-}
-
-void Matrix4::set(const Matrix4 & m)
-{
-	std::copy(m.values_begin, m.values_end, this->values_begin);
 }
 
 void Matrix4::set_col(int col, const Vector3 & v)
@@ -371,7 +349,7 @@ void Matrix4::rot_z(float angle)
 
 void Matrix4::scale(const Tuple3 & t)
 {
-	this->zero();
+	this->identity();
 	this->m00 = t.x;
 	this->m11 = t.y;
 	this->m22 = t.z;
@@ -460,6 +438,11 @@ bool Matrix4::equals(const Matrix4 & m) const
 	}
 
 	return true;
+}
+
+void Matrix4::set(const Matrix4 & m)
+{
+	std::copy(m.values_begin, m.values_end, this->values_begin);
 }
 
 }

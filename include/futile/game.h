@@ -8,7 +8,8 @@
 
 #include <futile/gametime.h>
 #include <futile/runnable.h>
-#include <futile/math/vector2.h>
+#include <futile/graphics/graphicsdevice.h>
+#include <futile/math/transform.h>
 #include <futile/platform/windowable.h>
 #include <futile/platform/windowfactory.h>
 
@@ -38,13 +39,14 @@ protected:
 	virtual void unload() = 0;
 	virtual void update(const GameTime & gt);
 
+	GraphicsDevice graphics_device;
+
 private:
 	void game_loop();
 
 	bool running;
 
 	GameTime game_time;
-	GraphicsContext graphics_context;
 	Windowable * window;
 };
 

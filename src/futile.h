@@ -8,7 +8,9 @@
 
 #include <sstream>
 
+#include <futile/color.h>
 #include <futile/game.h>
+#include <futile/camera/camera2d.h>
 #include <futile/graphics/spritebatch.h>
 #include <futile/graphics/texture2d.h>
 #include <futile/math/matrix4.h>
@@ -31,6 +33,7 @@ protected:
 	virtual void draw(const GameTime & gt);
 
 private:
+	Camera2D camera;
 	SpriteBatch sb;
 	Texture2D texture;
 };
